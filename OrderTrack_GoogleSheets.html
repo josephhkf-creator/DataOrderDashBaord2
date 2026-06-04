@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>OrderTrack</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<style>
+:root{
+  --navy:#0f1b2d;
+  --navy2:#162236;
+  --navy3:#1e3050;
+  --navy4:#24406b;
+  --gold:#c9a84c;
+  --gold2:#e0be72;
+  --gold3:#f5d98a;
+  --white:#ffffff;
+  --off:#f4f6f9;
+  --muted:#8898aa;
+  --border:#233045;
+  --text:#e8edf4;
+  --text2:#b0bed0;
+  --green:#28a745;
+  --amber:#ffc107;
+  --red:#dc3545;
+  --radius:8px;
+  --shadow:0 4px 24px rgba(0,0,0,0.35);
+}
+body.light-mode{
+  --navy:#f0f4f8;
+  --navy2:#ffffff;
+  --navy3:#e2e8f0;
+  --navy4:#cbd5e0;
+  --muted:#64748b;
+  --border:#cbd5e0;
+  --text:#1a202c;
+  --text2:#4a5568;
+  --shadow:0 4px 24px rgba(0,0,0,0.10);
+}
+body.light-mode .topbar{background:#ffffff;border-bottom:1px solid #cbd5e0}
+body.light-mode .user-badge{background:#f0f4f8;border-color:#cbd5e0}
+body.light-mode .nav-tab:hover{background:rgba(0,0,0,.05);color:#1a202c}
+body.light-mode thead{background:#f0f4f8}
+body.light-mode tr:hover td{background:rgba(0,0,0,.025)}
+body.light-mode .slider{background:#cbd5e0;border-color:#b0bed0}
+body.light-mode .slider:before{background:#64748b}
+body.light-mode .filter-bar input,body.light-mode .filter-bar select{background:#f0f4f8;border-color:#cbd5e0;color:#1a202c}
+body.light-mode .form-field input,body.light-mode .form-field select,body.light-mode .form-field textarea{background:#f0f4f8;border-color:#cbd5e0;color:#1a202c}
+body.light-mode .form-field select option{background:#ffffff;color:#1a202c}
+body.light-mode .modal{background:#ffffff}
+body.light-mode .toast{background:#ffffff;border-color:#cbd5e0;color:#1a202c}
+body.light-mode .toast.success{background:rgba(40,167,69,.08)}
+body.light-mode .toast.error{background:rgba(220,53,69,.08)}
+body.light-mode .chip{background:#e2e8f0;border-color:#cbd5e0}
+body.light-mode .comment-add input{background:#f0f4f8;border-color:#cbd5e0;color:#1a202c}
+body.light-mode .readonly-val{background:#f0f4f8;border-color:#cbd5e0}
+body.light-mode #login-screen{background:linear-gradient(135deg,#e2e8f0 0%,#f0f4f8 100%)}
+body.light-mode .login-box{background:#ffffff;border-color:#cbd5e0}
+body.light-mode .role-tabs{background:#f0f4f8}
+body.light-mode .form-group input{background:#f0f4f8;border-color:#cbd5e0;color:#1a202c}
+body.light-mode .btn-navy{background:#e2e8f0;color:#1a202c;border-color:#cbd5e0}
+body.light-mode .btn-navy:hover{background:#cbd5e0}
+body.light-mode .tbl-wrap{border-color:#cbd5e0}
+body.light-mode td{border-bottom-color:rgba(203,213,224,.6)}
+body.light-mode th{border-bottom-color:#cbd5e0}
+body.light-mode .settings-table td{border-bottom-color:rgba(203,213,224,.4)}
+body.light-mode .comment-entry{border-bottom-color:#cbd5e0}
+body.light-mode .filter-bar .toggle-hide{background:#f0f4f8;border-color:#cbd5e0;color:#64748b}
+body.light-mode .filter-bar .toggle-hide.active{background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold)}
+/* theme toggle button */
+.theme-toggle{display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--navy3);border:1px solid var(--border);border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);transition:all .2s;user-select:none;white-space:nowrap}
+.theme-toggle:hover{color:var(--text);border-color:var(--gold)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);min-height:100vh;font-size:14px}
+/* ── LOGIN ── */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--navy) 0%,var(--navy3) 100%)}
+.login-box{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:40px;width:100%;max-width:420px;box-shadow:var(--shadow)}
+.login-logo{text-align:center;margin-bottom:28px}
+.login-logo h1{font-size:28px;font-weight:700;letter-spacing:-0.5px;color:var(--white)}
+.login-logo span{color:var(--gold)}
+.login-logo p{color:var(--muted);font-size:13px;margin-top:4px}
+.role-tabs{display:flex;background:var(--navy);border-radius:8px;padding:4px;margin-bottom:24px;gap:2px}
+.role-tab{flex:1;padding:8px 4px;text-align:center;font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;border-radius:6px;transition:all .2s;border:none;background:none}
+.role-tab.active{background:var(--gold);color:var(--navy);font-weight:700}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.form-group input{width:100%;padding:10px 14px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'DM Mono',monospace;font-size:13px;outline:none;transition:border-color .2s}
+.form-group input:focus{border-color:var(--gold)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .2s;white-space:nowrap}
+.btn-gold{background:var(--gold);color:var(--navy)}
+.btn-gold:hover{background:var(--gold2)}
+.btn-navy{background:var(--navy3);color:var(--text);border:1px solid var(--border)}
+.btn-navy:hover{background:var(--navy4)}
+.btn-danger{background:rgba(220,53,69,.15);color:#ff6b7a;border:1px solid rgba(220,53,69,.3)}
+.btn-danger:hover{background:rgba(220,53,69,.3)}
+.btn-sm{padding:6px 12px;font-size:12px}
+.btn-full{width:100%;justify-content:center}
+.login-err{color:#ff6b7a;font-size:12px;margin-top:8px;display:none}
+/* ── APP SHELL ── */
+#app{display:none;flex-direction:column;min-height:100vh}
+.topbar{background:var(--navy2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:stretch;height:56px}
+.topbar-brand{display:flex;align-items:center;font-size:16px;font-weight:700;color:var(--white);padding-right:32px;border-right:1px solid var(--border);margin-right:8px}
+.topbar-brand span{color:var(--gold)}
+.nav-tabs{display:flex;align-items:stretch;flex:1;gap:2px}
+.nav-tab{display:flex;align-items:center;padding:0 18px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
+.nav-tab:hover{color:var(--white);background:rgba(255,255,255,.05)}
+.nav-tab.active{background:var(--gold);color:var(--navy);font-weight:700;border-bottom:none}
+.topbar-right{display:flex;align-items:center;gap:12px;margin-left:auto}
+.user-badge{display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--navy);border:1px solid var(--border);border-radius:20px}
+.user-badge .role-pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;text-transform:uppercase;letter-spacing:.5px}
+.role-pill.superuser{background:rgba(201,168,76,.2);color:var(--gold)}
+.role-pill.admin{background:rgba(66,153,225,.2);color:#63b3ed}
+.role-pill.manager{background:rgba(72,187,120,.2);color:#68d391}
+.role-pill.user{background:rgba(160,174,192,.2);color:#a0aec0}
+.main{flex:1;padding:24px;max-width:1400px;margin:0 auto;width:100%}
+/* ── CARDS / PANELS ── */
+.card{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px}
+.card-title{font-size:15px;font-weight:700;color:var(--white);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+/* ── FORMS ── */
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:16px}
+.form-grid-2{grid-template-columns:repeat(2,1fr)}
+.form-field label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.form-field input,.form-field select,.form-field textarea{width:100%;padding:9px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--gold)}
+.form-field select option{background:var(--navy)}
+.form-field textarea{resize:vertical;min-height:60px}
+.form-field input[type=date]{font-family:'DM Mono',monospace}
+.form-actions{display:flex;gap:10px;padding-top:4px}
+/* ── TABLE ── */
+.tbl-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+thead{background:var(--navy)}
+th{padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;border-bottom:1px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid rgba(35,48,69,.6);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.025)}
+/* ── STATUS PILLS ── */
+.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.pill-amber{background:rgba(255,193,7,.15);color:#ffc107}
+.pill-green{background:rgba(40,167,69,.15);color:#28a745}
+.pill-red{background:rgba(220,53,69,.15);color:#dc3545}
+.pill-navy{background:rgba(255,255,255,.1);color:var(--text2)}
+.pill-sea{background:rgba(66,153,225,.15);color:#63b3ed}
+.pill-air{background:rgba(159,122,234,.15);color:#b794f4}
+.pill-chem{background:rgba(245,101,101,.15);color:#fc8181}
+.pill-nchem{background:rgba(72,187,120,.15);color:#68d391}
+/* ── TOGGLE ── */
+.toggle-wrap{display:flex;align-items:center;gap:8px}
+.toggle{position:relative;display:inline-block;width:38px;height:20px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--navy3);border-radius:20px;transition:.3s;border:1px solid var(--border)}
+.slider:before{position:absolute;content:"";height:14px;width:14px;left:2px;bottom:2px;background:var(--muted);border-radius:50%;transition:.3s}
+input:checked+.slider{background:var(--gold);border-color:var(--gold)}
+input:checked+.slider:before{transform:translateX(18px);background:var(--navy)}
+/* ── FILTER BAR ── */
+.filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
+.filter-bar input,.filter-bar select{padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none}
+.filter-bar input:focus,.filter-bar select:focus{border-color:var(--gold)}
+.filter-bar .toggle-hide{display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);transition:all .2s;user-select:none}
+.filter-bar .toggle-hide.active{background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold)}
+/* ── CHECKBOXES ── */
+.chk-list{display:flex;flex-wrap:wrap;gap:8px;padding:8px 0}
+.chk-item{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer}
+.chk-item input[type=checkbox]{accent-color:var(--gold);width:15px;height:15px;cursor:pointer}
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px}
+.modal-overlay.show{display:flex}
+.modal{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:28px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow)}
+.modal h3{font-size:16px;font-weight:700;color:var(--white);margin-bottom:20px}
+/* ── TOAST ── */
+#toast-container{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(--navy2);border:1px solid var(--border);border-radius:8px;padding:12px 18px;font-size:13px;color:var(--text);box-shadow:var(--shadow);max-width:340px;animation:slideIn .3s ease}
+.toast.success{border-color:var(--green);background:rgba(40,167,69,.1)}
+.toast.error{border-color:var(--red);background:rgba(220,53,69,.1)}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+/* ── BADGES ── */
+.badge-warn{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--amber);background:rgba(255,193,7,.1);border:1px solid rgba(255,193,7,.3);border-radius:4px;padding:2px 6px;cursor:pointer}
+/* ── ANALYTICS ── */
+.heat-green{background:rgba(40,167,69,.15);color:#68d391}
+.heat-amber{background:rgba(255,193,7,.15);color:#ffc107}
+.heat-red{background:rgba(220,53,69,.15);color:#ff6b7a}
+.analytics-cell{padding:8px 10px;border-radius:6px;font-family:'DM Mono',monospace;font-size:12px;text-align:center}
+/* ── SETTINGS CHIPS ── */
+.chip-list{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:var(--navy3);border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:500}
+.chip-remove{cursor:pointer;color:var(--muted);font-size:14px;line-height:1;transition:color .2s}
+.chip-remove:hover{color:var(--red)}
+/* ── COMMENT LOG ── */
+.comment-entry{font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);padding:6px 0;border-bottom:1px solid var(--border)}
+.comment-entry:last-child{border-bottom:none}
+.comment-add{display:flex;gap:8px;margin-top:12px}
+.comment-add input{flex:1;padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;outline:none}
+.comment-add input:focus{border-color:var(--gold)}
+/* ── DAYS COLOR ── */
+.days-green{color:#68d391}
+.days-amber{color:#ffc107}
+.days-red{color:#ff6b7a}
+/* ── STATUS CHECKBOXES ── */
+.status-checks{display:flex;flex-direction:column;gap:4px}
+.status-checks label{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2);cursor:pointer;white-space:nowrap}
+.status-checks input[type=checkbox]{accent-color:var(--gold)}
+/* ── SECTION HEADER ── */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .main{padding:12px}
+  .topbar{padding:0 12px}
+  .nav-tab{padding:0 10px;font-size:12px}
+  .form-grid{grid-template-columns:1fr}
+  .login-box{padding:24px 16px}
+}
+/* ── COLLAPSED FORM ── */
+.collapsible{display:none}
+.collapsible.open{display:block}
+/* ── READONLY TEXT ── */
+.readonly-val{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;width:100%}
+/* ── NUMBER INPUT ── */
+input[type=number]{-moz-appearance:textfield}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+/* ── TABLE MONO ── */
+.mono{font-family:'DM Mono',monospace;font-size:12px}
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:48px;color:var(--muted)}
+.empty-state p{margin-top:8px;font-size:13px}
+/* SETTINGS TABLE */
+.settings-table{width:100%;border-collapse:collapse}
+.settings-table th{padding:8px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)}
+.settings-table td{padding:10px 12px;border-bottom:1px solid rgba(35,48,69,.4);font-size:13px}
+.settings-table tr:last-child td{border-bottom:none}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <h1>Order<span>Track</span></h1>
+      <p>International Order Management</p>
+    </div>
+    <div class="role-tabs" id="role-tabs">
+      <button class="role-tab active" data-role="user">User</button>
+      <button class="role-tab" data-role="superuser">Superuser</button>
+      <button class="role-tab" data-role="admin">Admin</button>
+      <button class="role-tab" data-role="manager">Manager</button>
+    </div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="login-username" autocomplete="off"/>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="login-password"/>
+    </div>
+    <div class="login-err" id="login-err">Invalid credentials. Please try again.</div>
+    <button class="btn btn-gold btn-full" style="margin-top:8px" onclick="doLogin()">Sign In</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none;flex-direction:column;min-height:100vh">
+  <div class="topbar">
+    <div class="topbar-brand">Order<span style="color:var(--gold)">Track</span></div>
+    <div class="nav-tabs" id="nav-tabs"></div>
+    <div class="topbar-right">
+      <div class="user-badge">
+        <span id="nav-username" style="font-size:13px;font-weight:600"></span>
+        <span id="nav-rolepill" class="role-pill"></span>
+      </div>
+      <div class="theme-toggle" id="theme-toggle-btn" onclick="toggleTheme()" title="Switch light/dark mode">
+        <span id="theme-icon">☀️</span><span id="theme-label">Light</span>
+      </div>
+      <button class="btn btn-navy btn-sm" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <!-- PURCHASE ORDERS -->
+    <div id="page-po" style="display:none">
+      <div class="section-header">
+        <h2 style="font-size:18px;font-weight:700;color:var(--white)">Purchase Orders</h2>
+        <button id="btn-new-po" class="btn btn-gold" onclick="togglePOForm()">+ New Purchase Request</button>
+      </div>
+
+      <!-- PO Form -->
+      <div id="po-form-wrap" class="card collapsible">
+        <div class="card-title">New Purchase Request</div>
+        <div class="form-grid">
+          <div class="form-field"><label>Request Date</label><input type="date" id="po-date"/></div>
+          <div class="form-field"><label>Supplier Name</label>
+            <select id="po-supplier" onchange="handleSupplierSelect('po-supplier','po-supplier-other')"></select>
+            <input type="text" id="po-supplier-other" placeholder="Enter supplier name..." style="display:none;margin-top:6px;width:100%;padding:9px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none"/>
+          </div>
+          <div class="form-field"><label>Product Name</label><input type="text" id="po-product"/></div>
+          <div class="form-field"><label>Quantity</label><input type="number" id="po-qty"/></div>
+          <div class="form-field"><label>Units</label><select id="po-units"></select></div>
+          <div class="form-field"><label>Current Stock</label><input type="number" id="po-stock"/></div>
+          <div class="form-field"><label>Product Type</label>
+            <select id="po-type"><option value="Chemical">Chemical</option><option value="Non-Chemical">Non-Chemical</option></select>
+          </div>
+          <div class="form-field"><label>Reorder Level</label><input type="number" id="po-reorder"/></div>
+          <div class="form-field"><label>Consumption Rate</label><input type="number" id="po-cons-rate" placeholder="e.g. 200"/></div>
+          <div class="form-field"><label>Rate Period</label>
+            <select id="po-cons-period">
+              <option value="Day">per Day</option>
+              <option value="Week">per Week</option>
+              <option value="Month" selected>per Month</option>
+            </select>
+          </div>
+          <div class="form-field"><label>As At Date</label><input type="date" id="po-cons-date"/></div>
+        </div>
+        <div class="form-field" style="margin-bottom:14px">
+          <label>Approved By (select manager/s)</label>
+          <div class="chk-list" id="po-managers-list"></div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-gold" onclick="savePO()">Save Request</button>
+          <button class="btn btn-navy" onclick="togglePOForm(false)">Cancel</button>
+        </div>
+      </div>
+
+      <!-- PO Table -->
+      <div class="tbl-wrap">
+        <table id="po-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Request Date</th><th>Supplier</th><th>Product</th>
+              <th>Qty + Unit</th><th>Stock</th><th>Type</th><th>Reorder Lvl</th>
+              <th>Cons. Rate</th>
+              <th>Approved By</th><th>Status</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="po-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="page-dashboard" style="display:none">
+      <div class="section-header">
+        <h2 style="font-size:18px;font-weight:700;color:var(--white)">Dashboard</h2>
+        <div style="display:flex;gap:10px">
+          <button id="btn-new-order" class="btn btn-gold" onclick="toggleOrderForm()">+ New Order</button>
+          <button class="btn btn-navy" onclick="exportDashboardPDF()">⬇ Export PDF</button>
+        </div>
+      </div>
+
+      <!-- Order Form -->
+      <div id="order-form-wrap" class="card collapsible">
+        <div class="card-title">New Order</div>
+        <div class="form-grid">
+          <div class="form-field"><label>Order Date</label><input type="date" id="ord-date"/></div>
+          <div class="form-field"><label>Supplier Name</label>
+            <select id="ord-supplier" onchange="handleSupplierSelect('ord-supplier','ord-supplier-other')"></select>
+            <input type="text" id="ord-supplier-other" placeholder="Enter supplier name..." style="display:none;margin-top:6px;width:100%;padding:9px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none"/>
+          </div>
+          <div class="form-field"><label>Country</label><input type="text" id="ord-country"/></div>
+          <div class="form-field"><label>Quantity</label><input type="number" id="ord-qty"/></div>
+          <div class="form-field"><label>Product Name</label><input type="text" id="ord-product"/></div>
+          <div class="form-field"><label>Shipping Method</label>
+            <select id="ord-shipping"><option value="Sea">Sea</option><option value="Air">Air</option></select>
+          </div>
+          <div class="form-field"><label>Product Type</label>
+            <select id="ord-type"><option value="Chemical">Chemical</option><option value="Non-Chemical">Non-Chemical</option></select>
+          </div>
+          <div class="form-field"><label>Ship Name / Flight No.</label><input type="text" id="ord-vessel"/></div>
+          <div class="form-field"><label>ETA</label><input type="date" id="ord-eta"/></div>
+          <div class="form-field"><label>Available in Store</label><input type="date" id="ord-instore"/></div>
+        </div>
+        <div class="form-grid form-grid-2" style="max-width:400px">
+          <div class="form-field">
+            <label>In Production</label>
+            <div class="toggle-wrap" style="padding-top:6px">
+              <label class="toggle"><input type="checkbox" id="ord-prod"/><span class="slider"></span></label>
+              <span id="ord-prod-lbl" style="font-size:13px;color:var(--muted)">No</span>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Available Ex-Works</label>
+            <div class="toggle-wrap" style="padding-top:6px">
+              <label class="toggle"><input type="checkbox" id="ord-exw"/><span class="slider"></span></label>
+              <span id="ord-exw-lbl" style="font-size:13px;color:var(--muted)">No</span>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Product Shipped</label>
+            <div class="toggle-wrap" style="padding-top:6px">
+              <label class="toggle"><input type="checkbox" id="ord-shipped"/><span class="slider"></span></label>
+              <span id="ord-shipped-lbl" style="font-size:13px;color:var(--muted)">No</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-field" style="max-width:400px;margin-bottom:16px">
+          <label>Comments</label>
+          <textarea id="ord-comments" placeholder="YYMMDD_ prefixed automatically..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-gold" onclick="saveOrder()">Save Order</button>
+          <button class="btn btn-navy" onclick="toggleOrderForm(false)">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <input type="text" id="dash-search" placeholder="Search product or supplier..." oninput="renderDashboard()" style="min-width:200px"/>
+        <select id="dash-country" onchange="renderDashboard()"><option value="">All Countries</option></select>
+        <select id="dash-shipping" onchange="renderDashboard()">
+          <option value="">All Shipping</option><option value="Sea">Sea</option><option value="Air">Air</option>
+        </select>
+        <select id="dash-type" onchange="renderDashboard()">
+          <option value="">All Types</option><option value="Chemical">Chemical</option><option value="Non-Chemical">Non-Chemical</option>
+        </select>
+        <select id="dash-shipped" onchange="renderDashboard()">
+          <option value="">All Shipped</option><option value="yes">Shipped: Yes</option><option value="no">Shipped: No</option>
+        </select>
+        <div class="toggle-hide" id="hide-arrived-btn" onclick="toggleHideArrived()">👁 Hide Arrived</div>
+        <button class="btn btn-navy btn-sm" onclick="clearDashFilters()">Clear</button>
+      </div>
+
+      <div class="tbl-wrap">
+        <table id="dash-table">
+          <thead>
+            <tr>
+              <th>#</th><th>Order Date</th><th>Supplier</th><th>Country</th><th>Product</th>
+              <th>Qty</th><th>Shipping</th><th>Status</th><th>ETA</th><th>In Store</th>
+              <th>Days</th><th>Comments</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="dash-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ANALYTICS -->
+    <div id="page-analytics" style="display:none">
+      <div class="section-header">
+        <h2 style="font-size:18px;font-weight:700;color:var(--white)">Analytics</h2>
+        <div style="display:flex;gap:10px;align-items:center">
+          <select id="analytics-year" onchange="renderAnalytics()" style="padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none"></select>
+          <select id="analytics-country" onchange="renderAnalytics()" style="padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none">
+            <option value="">All Countries</option>
+          </select>
+          <button class="btn btn-navy" onclick="exportAnalyticsPDF()">⬇ Export PDF</button>
+        </div>
+      </div>
+      <div class="card">
+        <div style="overflow-x:auto">
+          <table id="analytics-table" style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border)">
+                <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Country</th>
+                <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Q1 Jan–Mar</th>
+                <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Q2 Apr–Jun</th>
+                <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Q3 Jul–Sep</th>
+                <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Q4 Oct–Dec</th>
+              </tr>
+            </thead>
+            <tbody id="analytics-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEAD TIME -->
+    <div id="page-leadtime" style="display:none">
+      <div class="section-header">
+        <h2 style="font-size:18px;font-weight:700;color:var(--white)">Lead Time</h2>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <select id="lt-year" onchange="renderLeadTime()" style="padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none"></select>
+          <select id="lt-supplier" onchange="renderLeadTime()" style="padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none">
+            <option value="">All Suppliers</option>
+          </select>
+          <select id="lt-type" onchange="renderLeadTime()" style="padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none">
+            <option value="">All Types</option>
+            <option value="Chemical">Chemical</option>
+            <option value="Non-Chemical">Non-Chemical</option>
+          </select>
+          <select id="lt-shipping" onchange="renderLeadTime()" style="padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none">
+            <option value="">All Shipping</option>
+            <option value="Sea">Sea</option>
+            <option value="Air">Air</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div id="lt-kpis" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:20px"></div>
+
+      <!-- Supplier breakdown table -->
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-title">Average Lead Time by Supplier</div>
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border)">
+                <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Supplier</th>
+                <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Orders</th>
+                <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Min</th>
+                <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Avg</th>
+                <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Max</th>
+                <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Distribution</th>
+              </tr>
+            </thead>
+            <tbody id="lt-supplier-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Monthly trend table -->
+      <div class="card">
+        <div class="card-title">Monthly Average Lead Time</div>
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="border-bottom:1px solid var(--border)">
+                <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Month</th>
+                <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Orders</th>
+                <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Avg Lead Time</th>
+                <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">vs Year Avg</th>
+              </tr>
+            </thead>
+            <tbody id="lt-monthly-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="page-settings" style="display:none">
+      <div class="section-header">
+        <h2 style="font-size:18px;font-weight:700;color:var(--white)">⚙ Settings</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px">
+        <!-- User Management -->
+        <div class="card">
+          <div class="card-title">User Management</div>
+          <table class="settings-table" style="margin-bottom:16px">
+            <thead><tr><th>Username</th><th>Role</th><th></th></tr></thead>
+            <tbody id="users-tbody"></tbody>
+          </table>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+            <input type="text" id="new-user-name" placeholder="Username" style="padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none"/>
+            <input type="password" id="new-user-pass" placeholder="Password" style="padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none"/>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
+            <select id="new-user-role" style="padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none">
+              <option value="user">User</option><option value="superuser">Superuser</option>
+              <option value="admin">Admin</option><option value="manager">Manager</option>
+            </select>
+            <button class="btn btn-gold btn-sm" onclick="addUser()">Add User</button>
+          </div>
+        </div>
+        <!-- Manager Names -->
+        <div class="card">
+          <div class="card-title">Manager Names</div>
+          <div class="chip-list" id="managers-chips"></div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <input type="text" id="new-manager" placeholder="Manager name..." style="flex:1;padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none"/>
+            <button class="btn btn-gold btn-sm" onclick="addManager()">Add</button>
+          </div>
+        </div>
+        <!-- Quantity Units -->
+        <div class="card">
+          <div class="card-title">Quantity Units</div>
+          <div class="chip-list" id="units-chips"></div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <input type="text" id="new-unit" placeholder="Unit label (e.g. MT)..." style="flex:1;padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none"/>
+            <button class="btn btn-gold btn-sm" onclick="addUnit()">Add</button>
+          </div>
+        </div>
+        <!-- Suppliers -->
+        <div class="card">
+          <div class="card-title">Suppliers</div>
+          <div class="chip-list" id="suppliers-chips"></div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <input type="text" id="new-supplier" placeholder="Supplier name..." style="flex:1;padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none"/>
+            <button class="btn btn-gold btn-sm" onclick="addSupplier()">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Approve PO -->
+<div class="modal-overlay" id="approve-modal">
+  <div class="modal">
+    <h3>Approve Purchase Request</h3>
+    <p style="color:var(--text2);font-size:13px;margin-bottom:16px" id="approve-modal-info"></p>
+    <div class="form-field" style="margin-bottom:20px">
+      <label>Confirm / Adjust Quantity</label>
+      <input type="number" id="approve-qty"/>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-gold" onclick="confirmApprove()">Confirm Approval</button>
+      <button class="btn btn-navy" onclick="closeApproveModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Edit Order -->
+<div class="modal-overlay" id="edit-modal">
+  <div class="modal" style="max-width:680px">
+    <h3>Edit Order</h3>
+    <div class="form-grid">
+      <div class="form-field"><label>Order Date</label><input type="date" id="edit-date"/></div>
+      <div class="form-field"><label>Supplier</label>
+        <select id="edit-supplier" onchange="handleSupplierSelect('edit-supplier','edit-supplier-other')"></select>
+        <input type="text" id="edit-supplier-other" placeholder="Enter supplier name..." style="display:none;margin-top:6px;width:100%;padding:9px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none"/>
+      </div>
+      <div class="form-field"><label>Country</label><input type="text" id="edit-country"/></div>
+      <div class="form-field"><label>Quantity</label><input type="number" id="edit-qty"/></div>
+      <div class="form-field"><label>Product</label><input type="text" id="edit-product"/></div>
+      <div class="form-field"><label>Shipping</label>
+        <select id="edit-shipping"><option value="Sea">Sea</option><option value="Air">Air</option></select>
+      </div>
+      <div class="form-field"><label>Product Type</label>
+        <select id="edit-type"><option value="Chemical">Chemical</option><option value="Non-Chemical">Non-Chemical</option></select>
+      </div>
+      <div class="form-field"><label>Vessel / Flight No.</label><input type="text" id="edit-vessel"/></div>
+      <div class="form-field"><label>ETA</label><input type="date" id="edit-eta"/></div>
+      <div class="form-field"><label>In Store Date</label><input type="date" id="edit-instore"/></div>
+    </div>
+    <div class="form-grid form-grid-2" style="max-width:360px;margin-bottom:16px">
+      <div class="form-field">
+        <label>In Production</label>
+        <div class="toggle-wrap" style="padding-top:6px">
+          <label class="toggle"><input type="checkbox" id="edit-prod"/><span class="slider"></span></label>
+          <span id="edit-prod-lbl" style="font-size:13px;color:var(--muted)">No</span>
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Ex-Works</label>
+        <div class="toggle-wrap" style="padding-top:6px">
+          <label class="toggle"><input type="checkbox" id="edit-exw"/><span class="slider"></span></label>
+          <span id="edit-exw-lbl" style="font-size:13px;color:var(--muted)">No</span>
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Shipped</label>
+        <div class="toggle-wrap" style="padding-top:6px">
+          <label class="toggle"><input type="checkbox" id="edit-shipped"/><span class="slider"></span></label>
+          <span id="edit-shipped-lbl" style="font-size:13px;color:var(--muted)">No</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-gold" onclick="saveEditOrder()">Save Changes</button>
+      <button class="btn btn-navy" onclick="closeEditModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Comment Log -->
+<div class="modal-overlay" id="comment-modal">
+  <div class="modal">
+    <h3>Comment Log</h3>
+    <div id="comment-log" style="max-height:280px;overflow-y:auto;margin-bottom:8px"></div>
+    <div id="comment-add-row" class="comment-add" style="display:none">
+      <input type="text" id="comment-input" placeholder="Add a comment..." onkeydown="if(event.key==='Enter')addComment()"/>
+      <button class="btn btn-gold btn-sm" onclick="addComment()">+ Add</button>
+    </div>
+    <div style="margin-top:16px;display:flex;justify-content:flex-end">
+      <button class="btn btn-navy btn-sm" onclick="closeCommentModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<script>
+// ══════════════════════════════════════════════════
+// ▼▼▼  PASTE YOUR APPS SCRIPT WEB APP URL HERE  ▼▼▼
+// ══════════════════════════════════════════════════
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxuvOC5YyEhDvSY3fkkfceB6s03uEatT8NkGktJ-XYwFmqQO_Ar2rBldEk9Vl6Ojp9A/exec';
+// ══════════════════════════════════════════════════
+
+// ══════════════════════════════════════════════════
+// DB ADAPTER LAYER — Google Sheets backend
+// All methods are async. Internal cache keeps the
+// UI snappy; every write goes to the Sheet too.
+//
+// CORS note: Apps Script Web Apps support CORS on
+// GET requests automatically. For POST we encode
+// the payload as a query param on a GET request
+// so we never hit CORS preflight issues.
+// ══════════════════════════════════════════════════
+const _cache = {};
+
+// All communication goes via GET with a 'payload' param.
+// Apps Script handles both GETs (reads) and GET+payload (writes).
+async function _gsCall(params){
+  const url = SCRIPT_URL + '?' + new URLSearchParams(params);
+  const r = await fetch(url, {redirect:'follow'});
+  if(!r.ok) throw new Error('HTTP ' + r.status);
+  const text = await r.text();
+  try { return JSON.parse(text); }
+  catch(e) { throw new Error('Bad JSON: ' + text.slice(0,200)); }
+}
+
+function _genId(){return Date.now()+'_'+Math.random().toString(36).slice(2)}
+
+const DB={
+  // ── ORDERS ──────────────────────────────────────
+  async getOrders(){
+    if(_cache.orders)return _cache.orders;
+    const rows=await _gsCall({action:'getAll',sheet:'Orders'});
+    _cache.orders=Array.isArray(rows)?rows:[];
+    return _cache.orders;
+  },
+  async addOrder(o){
+    o.id=_genId();
+    await _gsCall({payload:JSON.stringify({action:'add',sheet:'Orders',id:o.id,data:o})});
+    if(_cache.orders)_cache.orders.push(o);
+    return o;
+  },
+  async updateOrder(id,data){
+    await _gsCall({payload:JSON.stringify({action:'update',sheet:'Orders',id,data})});
+    if(_cache.orders){const i=_cache.orders.findIndex(x=>x.id===id);if(i>-1)_cache.orders[i]={..._cache.orders[i],...data};}
+  },
+  async deleteOrder(id){
+    await _gsCall({payload:JSON.stringify({action:'delete',sheet:'Orders',id})});
+    if(_cache.orders)_cache.orders=_cache.orders.filter(x=>x.id!==id);
+  },
+
+  // ── REQUESTS ────────────────────────────────────
+  async getRequests(){
+    if(_cache.requests)return _cache.requests;
+    const rows=await _gsCall({action:'getAll',sheet:'Requests'});
+    _cache.requests=Array.isArray(rows)?rows:[];
+    return _cache.requests;
+  },
+  async addRequest(r){
+    r.id=_genId();
+    await _gsCall({payload:JSON.stringify({action:'add',sheet:'Requests',id:r.id,data:r})});
+    if(_cache.requests)_cache.requests.push(r);
+    return r;
+  },
+  async updateRequest(id,data){
+    await _gsCall({payload:JSON.stringify({action:'update',sheet:'Requests',id,data})});
+    if(_cache.requests){const i=_cache.requests.findIndex(x=>x.id===id);if(i>-1)_cache.requests[i]={..._cache.requests[i],...data};}
+  },
+  async deleteRequest(id){
+    await _gsCall({payload:JSON.stringify({action:'delete',sheet:'Requests',id})});
+    if(_cache.requests)_cache.requests=_cache.requests.filter(x=>x.id!==id);
+  },
+
+  // ── SETTINGS ────────────────────────────────────
+  async _getSetting(key,fallback){
+    if(_cache[key]!==undefined)return _cache[key];
+    const res=await _gsCall({action:'getSetting',key});
+    const val=(res&&res.value!=null)?res.value:fallback;
+    _cache[key]=val;
+    return val;
+  },
+  async _saveSetting(key,value){
+    _cache[key]=value;
+    await _gsCall({payload:JSON.stringify({action:'saveSetting',key,value})});
+  },
+
+  async getUsers(){
+    return this._getSetting('ot_users',[
+      {id:'root',username:'user',password:'user123',role:'user'},
+      {id:'root2',username:'admin',password:'admin123',role:'superuser'},
+      {id:'root3',username:'sysadmin',password:'sysadmin123',role:'admin'},
+      {id:'root4',username:'manager',password:'manager123',role:'manager'}
+    ]);
+  },
+  async saveUsers(u){return this._saveSetting('ot_users',u)},
+  async addUser(u){const a=await this.getUsers();u.id=Date.now()+'';a.push(u);await this.saveUsers(a)},
+  async deleteUser(id){const a=(await this.getUsers()).filter(x=>x.id!==id);await this.saveUsers(a)},
+  async validateUser(u,p,role){return(await this.getUsers()).find(x=>x.username===u&&x.password===p&&x.role===role)||null},
+
+  async getManagers(){return this._getSetting('ot_managers',['Alice Tan','Bob Lim','Carol Ng'])},
+  async saveManagers(d){return this._saveSetting('ot_managers',d)},
+  async getUnits(){return this._getSetting('ot_units',['Kg','MT','Litres','Drums','Boxes','Bags'])},
+  async saveUnits(d){return this._saveSetting('ot_units',d)},
+  async getSuppliers(){return this._getSetting('ot_suppliers',[])},
+  async saveSuppliers(d){return this._saveSetting('ot_suppliers',d)},
+
+  // Call this to force a fresh fetch from Sheets (e.g. after page focus)
+  clearCache(){Object.keys(_cache).forEach(k=>delete _cache[k]);}
+};
+
+// ══════════════════════════════════════════════════
+// APP STATE
+// ══════════════════════════════════════════════════
+let currentUser=null;
+let hideArrived=false;
+let approvingId=null;
+let editingId=null;
+let commentOrderId=null;
+let selectedRole='user';
+
+// ══════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════
+function today(){return new Date().toISOString().split('T')[0]}
+function todayPrefix(){const d=new Date();const yy=String(d.getFullYear()).slice(2);const mm=String(d.getMonth()+1).padStart(2,'0');const dd=String(d.getDate()).padStart(2,'0');return yy+mm+dd+'_'}
+function fmtDate(s){if(!s)return'—';const[y,m,d]=s.split('-');return`${d}/${m}/${y}`}
+function daysBetween(a,b){if(!a||!b)return null;return Math.round((new Date(b)-new Date(a))/(86400000))}
+function daysColor(n){if(n===null)return'—';const c=n<=30?'days-green':n<=60?'days-amber':'days-red';return`<span class="${c} mono">${n}d</span>`}
+function genId(){return Date.now()+'_'+Math.random().toString(36).slice(2)}
+function toast(msg,type='success'){
+  const el=document.createElement('div');el.className=`toast ${type}`;el.textContent=msg;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(()=>el.remove(),3500);
+}
+function confirm2(msg){return window.confirm(msg)}
+function roleCapital(r){return r.charAt(0).toUpperCase()+r.slice(1)}
+function yyyymmdd(){const d=new Date();return`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`}
+function hhmmss(){const d=new Date();return`${String(d.getHours()).padStart(2,'0')}${String(d.getMinutes()).padStart(2,'0')}${String(d.getSeconds()).padStart(2,'0')}`}
+
+function canEdit(){return['superuser','admin','manager'].includes(currentUser.role)}
+function isAdmin(){return['superuser','admin'].includes(currentUser.role)}
+
+// ══════════════════════════════════════════════════
+// THEME TOGGLE
+// ══════════════════════════════════════════════════
+function toggleTheme(){
+  const isLight=document.body.classList.toggle('light-mode');
+  localStorage.setItem('ot_theme',isLight?'light':'dark');
+  updateThemeBtn(isLight);
+}
+function updateThemeBtn(isLight){
+  document.getElementById('theme-icon').textContent=isLight?'🌙':'☀️';
+  document.getElementById('theme-label').textContent=isLight?'Dark':'Light';
+}
+function applyStoredTheme(){
+  const stored=localStorage.getItem('ot_theme');
+  if(stored==='light'){document.body.classList.add('light-mode');updateThemeBtn(true);}
+  else{document.body.classList.remove('light-mode');updateThemeBtn(false);}
+}
+applyStoredTheme();
+
+// ══════════════════════════════════════════════════
+// SUPPLIER DROPDOWN HELPERS
+// ══════════════════════════════════════════════════
+async function populateSupplierDropdown(selId){
+  const sel=document.getElementById(selId);
+  const suppliers=await DB.getSuppliers();
+  sel.innerHTML='<option value="">— Select supplier —</option>'+
+    suppliers.map(s=>`<option value="${s}">${s}</option>`).join('')+
+    '<option value="__other__">+ Other (type manually)</option>';
+}
+
+function handleSupplierSelect(selId,otherId){
+  const sel=document.getElementById(selId);
+  const other=document.getElementById(otherId);
+  if(sel.value==='__other__'){other.style.display='block';other.focus()}
+  else{other.style.display='none';other.value=''}
+}
+
+function getSupplierValue(selId,otherId){
+  const sel=document.getElementById(selId);
+  if(sel.value==='__other__')return document.getElementById(otherId).value.trim();
+  return sel.value;
+}
+
+// ══════════════════════════════════════════════════
+// LOGIN
+// ══════════════════════════════════════════════════
+document.querySelectorAll('.role-tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.role-tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    selectedRole=t.dataset.role;
+  });
+});
+
+document.getElementById('login-password').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+
+async function doLogin(){
+  const u=document.getElementById('login-username').value.trim();
+  const p=document.getElementById('login-password').value;
+  const btn=document.querySelector('#login-screen .btn-gold');
+  btn.textContent='Signing in…';btn.disabled=true;
+  try{
+    const user=await DB.validateUser(u,p,selectedRole);
+    if(!user){document.getElementById('login-err').style.display='block';btn.textContent='Sign In';btn.disabled=false;return}
+    document.getElementById('login-err').style.display='none';
+    currentUser=user;
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='flex';
+    initApp();
+  }catch(e){
+    document.getElementById('login-err').textContent='Connection error. Check your Script URL.';
+    document.getElementById('login-err').style.display='block';
+    btn.textContent='Sign In';btn.disabled=false;
+  }
+}
+
+function doLogout(){
+  currentUser=null;hideArrived=false;
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-username').value='';
+  document.getElementById('login-password').value='';
+}
+
+// ══════════════════════════════════════════════════
+// APP INIT
+// ══════════════════════════════════════════════════
+function initApp(){
+  document.getElementById('nav-username').textContent=currentUser.username;
+  const rp=document.getElementById('nav-rolepill');
+  rp.textContent=roleCapital(currentUser.role);
+  rp.className='role-pill '+currentUser.role;
+
+  buildNav();
+  const defaultPage=currentUser.role==='user'?'dashboard':'po';
+  showPage(defaultPage);
+  initToggleListeners();
+}
+
+function buildNav(){
+  const tabs=[
+    {id:'po',label:'Purchase Orders',roles:['superuser','admin','manager']},
+    {id:'dashboard',label:'Dashboard',roles:['superuser','admin','manager','user']},
+    {id:'analytics',label:'Analytics',roles:['superuser','admin','manager','user']},
+    {id:'leadtime',label:'Lead Time',roles:['superuser','admin','manager','user']},
+    {id:'settings',label:'⚙ Settings',roles:['superuser','admin']}
+  ];
+  const nav=document.getElementById('nav-tabs');
+  nav.innerHTML='';
+  tabs.forEach(t=>{
+    if(!t.roles.includes(currentUser.role))return;
+    const el=document.createElement('div');
+    el.className='nav-tab';el.dataset.page=t.id;el.textContent=t.label;
+    el.addEventListener('click',()=>showPage(t.id));
+    nav.appendChild(el);
+  });
+}
+
+async function showPage(id){
+  document.querySelectorAll('[id^="page-"]').forEach(p=>p.style.display='none');
+  document.querySelectorAll('.nav-tab').forEach(t=>{
+    t.classList.toggle('active',t.dataset.page===id);
+  });
+  document.getElementById('page-'+id).style.display='block';
+  if(id==='po')await renderPO();
+  if(id==='dashboard'){await populateDashCountryFilter();await renderDashboard();}
+  if(id==='analytics'){await initAnalytics();await renderAnalytics();}
+  if(id==='leadtime'){await initLeadTime();await renderLeadTime();}
+  if(id==='settings')await renderSettings();
+}
+
+function initToggleListeners(){
+  ['ord-prod','ord-exw','ord-shipped','edit-prod','edit-exw','edit-shipped'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){
+      el.addEventListener('change',()=>{
+        const lbl=document.getElementById(id+'-lbl');
+        if(lbl)lbl.textContent=el.checked?'Yes':'No';
+      });
+    }
+  });
+}
+
+// ══════════════════════════════════════════════════
+// PURCHASE ORDERS
+// ══════════════════════════════════════════════════
+async function togglePOForm(open){
+  const wrap=document.getElementById('po-form-wrap');
+  if(open===false){wrap.classList.remove('open');return}
+  wrap.classList.toggle('open');
+  if(wrap.classList.contains('open')){
+    document.getElementById('po-date').value=today();
+    await populatePOUnits();
+    await populatePOManagers();
+    await populatePOSupplier();
+  }
+}
+
+async function populatePOUnits(){
+  const sel=document.getElementById('po-units');
+  const units=await DB.getUnits();
+  sel.innerHTML=units.map(u=>`<option value="${u}">${u}</option>`).join('');
+}
+
+async function populatePOManagers(){
+  const list=document.getElementById('po-managers-list');
+  const mgrs=await DB.getManagers();
+  list.innerHTML=mgrs.map(m=>`<label class="chk-item"><input type="checkbox" value="${m}"/> ${m}</label>`).join('');
+}
+
+async function populatePOSupplier(){
+  await populateSupplierDropdown('po-supplier');
+  document.getElementById('po-supplier-other').style.display='none';
+}
+
+async function savePO(){
+  const date=document.getElementById('po-date').value;
+  const supplier=getSupplierValue('po-supplier','po-supplier-other');
+  const product=document.getElementById('po-product').value.trim();
+  const qty=document.getElementById('po-qty').value;
+  const unit=document.getElementById('po-units').value;
+  const stock=document.getElementById('po-stock').value;
+  const type=document.getElementById('po-type').value;
+  const reorder=document.getElementById('po-reorder').value;
+  if(!date||!supplier||!product||!qty){toast('Please fill required fields','error');return}
+  const checked=[...document.querySelectorAll('#po-managers-list input:checked')].map(x=>x.value);
+  const consRate=document.getElementById('po-cons-rate').value;
+  const consPeriod=document.getElementById('po-cons-period').value;
+  const consAsAt=document.getElementById('po-cons-date').value;
+  await DB.addRequest({date,supplier,product,qty:Number(qty),unit,stock:Number(stock),type,reorder:Number(reorder),consRate:consRate?Number(consRate):null,consPeriod,consAsAt,approvedBy:checked.join(', '),status:'Pending',origQty:null,approvedQty:null});
+  togglePOForm(false);
+  clearPOForm();
+  await renderPO();
+  toast('Purchase request saved');
+}
+
+function clearPOForm(){
+  ['po-product','po-qty','po-stock','po-reorder','po-cons-rate','po-cons-date'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('po-supplier-other').value='';
+  document.getElementById('po-date').value=today();
+  document.getElementById('po-cons-period').value='Month';
+}
+
+async function renderPO(){
+  // Show/hide create btn for manager
+  const btn=document.getElementById('btn-new-po');
+  if(currentUser.role==='manager')btn.style.display='none';
+
+  // Re-populate supplier dropdown in case settings changed while form is open
+  const form=document.getElementById('po-form-wrap');
+  if(form.classList.contains('open')){
+    const currentVal=document.getElementById('po-supplier').value;
+    await populatePOSupplier();
+    // Restore selection if still valid
+    const sel=document.getElementById('po-supplier');
+    if(currentVal&&[...sel.options].some(o=>o.value===currentVal))sel.value=currentVal;
+  }
+
+  const tbody=document.getElementById('po-tbody');
+  const reqs=await DB.getRequests();
+  if(!reqs.length){
+    tbody.innerHTML=`<tr><td colspan="12"><div class="empty-state"><div style="font-size:32px">📋</div><p>No purchase requests yet</p></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML=reqs.map((r,i)=>{
+    const statusPill=r.status==='Pending'?'pill-amber':r.status==='Approved'?'pill-green':'pill-red';
+    const qtyCell=r.approvedQty&&r.approvedQty!==r.qty
+      ?`${r.approvedQty} ${r.unit} <span class="badge-warn" title="Original qty: ${r.qty} ${r.unit}">⚠ orig: ${r.qty}</span>`
+      :`${r.qty} ${r.unit}`;
+
+    let actions='';
+    if(currentUser.role==='manager'){
+      if(r.status==='Pending'){
+        actions=`<button class="btn btn-sm" style="background:rgba(40,167,69,.15);color:#28a745;border:1px solid rgba(40,167,69,.3)" onclick="openApproveModal('${r.id}')">Approve</button>
+          <button class="btn btn-danger btn-sm" onclick="rejectPO('${r.id}')">Reject</button>
+          <button class="btn btn-danger btn-sm" onclick="deletePO('${r.id}')" title="Delete">🗑</button>`;
+      } else {
+        actions=`<span style="color:var(--muted);font-size:12px">Decided</span>
+          <button class="btn btn-danger btn-sm" onclick="deletePO('${r.id}')" title="Delete">🗑</button>`;
+      }
+    } else {
+      actions=`<button class="btn btn-danger btn-sm" onclick="deletePO('${r.id}')" title="Delete">🗑</button>`;
+    }
+
+    return `<tr>
+      <td class="mono">${i+1}</td>
+      <td class="mono">${fmtDate(r.date)}</td>
+      <td>${r.supplier}</td>
+      <td>${r.product}</td>
+      <td>${qtyCell}</td>
+      <td class="mono">${r.stock??'—'}</td>
+      <td><span class="pill ${r.type==='Chemical'?'pill-chem':'pill-nchem'}">${r.type}</span></td>
+      <td class="mono">${r.reorder??'—'}</td>
+      <td style="font-size:12px;white-space:nowrap">${r.consRate!=null
+        ? `<span class="mono">${r.consRate} ${r.unit||''}/${r.consPeriod||'Month'}</span>${r.consAsAt?`<br/><span style="color:var(--muted);font-size:10px">as at ${fmtDate(r.consAsAt)}</span>`:''}`
+        : '—'}</td>
+      <td style="font-size:12px">${r.approvedBy||'—'}</td>
+      <td><span class="pill ${statusPill}">${r.status}</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px">${actions}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function openApproveModal(id){
+  const reqs=await DB.getRequests();
+  const req=reqs.find(r=>r.id===id);
+  if(!req)return;
+  approvingId=id;
+  document.getElementById('approve-modal-info').textContent=`${req.product} from ${req.supplier}`;
+  document.getElementById('approve-qty').value=req.qty;
+  document.getElementById('approve-modal').classList.add('show');
+}
+function closeApproveModal(){document.getElementById('approve-modal').classList.remove('show');approvingId=null}
+
+async function confirmApprove(){
+  const reqs=await DB.getRequests();
+  const req=reqs.find(r=>r.id===approvingId);
+  if(!req)return;
+  const newQty=Number(document.getElementById('approve-qty').value);
+  const qtyChanged=newQty!==Number(req.qty);
+  await DB.updateRequest(approvingId,{status:'Approved',approvedQty:newQty});
+  // Auto-create dashboard order
+  const comments=qtyChanged?[`${todayPrefix()}Quantity adjusted from ${req.qty} to ${newQty} ${req.unit} on approval`]:[];
+  await DB.addOrder({
+    date:today(),supplier:req.supplier,country:'',qty:newQty,product:req.product,
+    shipping:'Sea',type:req.type,vessel:'',prod:false,exw:false,shipped:false,
+    eta:'',instore:'',comments
+  });
+  closeApproveModal();
+  await renderPO();
+  if(qtyChanged)toast(`Request approved — quantity updated to ${newQty} ${req.unit}. Order created.`);
+  else toast('Request approved — order created in Dashboard');
+}
+
+async function rejectPO(id){
+  if(!confirm2('Reject this request?'))return;
+  await DB.updateRequest(id,{status:'Rejected'});
+  await renderPO();toast('Request rejected');
+}
+
+async function deletePO(id){
+  if(!confirm2('Delete this request? This is permanent.'))return;
+  await DB.deleteRequest(id);await renderPO();toast('Request deleted');
+}
+
+// ══════════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════════
+async function toggleOrderForm(open){
+  const wrap=document.getElementById('order-form-wrap');
+  if(open===false){wrap.classList.remove('open');return}
+  wrap.classList.toggle('open');
+  if(wrap.classList.contains('open')){
+    document.getElementById('ord-date').value=today();
+    ['ord-prod','ord-exw','ord-shipped'].forEach(id=>{
+      document.getElementById(id).checked=false;
+      document.getElementById(id+'-lbl').textContent='No';
+    });
+    document.getElementById('ord-comments').value='';
+    await populateSupplierDropdown('ord-supplier');
+    document.getElementById('ord-supplier-other').style.display='none';
+  }
+}
+
+async function saveOrder(){
+  const date=document.getElementById('ord-date').value;
+  const supplier=getSupplierValue('ord-supplier','ord-supplier-other');
+  const product=document.getElementById('ord-product').value.trim();
+  if(!date||!supplier||!product){toast('Fill required fields','error');return}
+  const raw=document.getElementById('ord-comments').value.trim();
+  const comments=raw?[`${todayPrefix()}${raw}`]:[];
+  await DB.addOrder({
+    date,supplier,country:document.getElementById('ord-country').value.trim(),
+    qty:document.getElementById('ord-qty').value||0,product,
+    shipping:document.getElementById('ord-shipping').value,
+    type:document.getElementById('ord-type').value,
+    vessel:document.getElementById('ord-vessel').value.trim(),
+    prod:document.getElementById('ord-prod').checked,
+    exw:document.getElementById('ord-exw').checked,
+    shipped:document.getElementById('ord-shipped').checked,
+    eta:document.getElementById('ord-eta').value,
+    instore:document.getElementById('ord-instore').value,
+    comments
+  });
+  toggleOrderForm(false);
+  clearOrderForm();
+  await populateDashCountryFilter();
+  await renderDashboard();
+  toast('Order saved');
+}
+
+function clearOrderForm(){
+  ['ord-country','ord-qty','ord-product','ord-vessel','ord-comments'].forEach(id=>document.getElementById(id).value='');
+  ['ord-eta','ord-instore'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ord-date').value=today();
+  document.getElementById('ord-shipping').value='Sea';
+  document.getElementById('ord-type').value='Chemical';
+}
+
+async function populateDashCountryFilter(){
+  const sel=document.getElementById('dash-country');
+  const curr=sel.value;
+  const orders=await DB.getOrders();
+  const countries=[...new Set(orders.map(o=>o.country).filter(Boolean))].sort();
+  sel.innerHTML='<option value="">All Countries</option>'+countries.map(c=>`<option value="${c}"${c===curr?' selected':''}>${c}</option>`).join('');
+}
+
+async function toggleHideArrived(){
+  hideArrived=!hideArrived;
+  const btn=document.getElementById('hide-arrived-btn');
+  btn.classList.toggle('active',hideArrived);
+  await renderDashboard();
+}
+
+async function clearDashFilters(){
+  document.getElementById('dash-search').value='';
+  document.getElementById('dash-country').value='';
+  document.getElementById('dash-shipping').value='';
+  document.getElementById('dash-type').value='';
+  document.getElementById('dash-shipped').value='';
+  hideArrived=false;
+  document.getElementById('hide-arrived-btn').classList.remove('active');
+  await renderDashboard();
+}
+
+async function getFilteredOrders(){
+  const search=document.getElementById('dash-search').value.toLowerCase();
+  const country=document.getElementById('dash-country').value;
+  const shipping=document.getElementById('dash-shipping').value;
+  const type=document.getElementById('dash-type').value;
+  const shipped=document.getElementById('dash-shipped').value;
+  const all=await DB.getOrders();
+  return all.filter(o=>{
+    if(search&&!o.product.toLowerCase().includes(search)&&!o.supplier.toLowerCase().includes(search))return false;
+    if(country&&o.country!==country)return false;
+    if(shipping&&o.shipping!==shipping)return false;
+    if(type&&o.type!==type)return false;
+    if(shipped==='yes'&&!o.shipped)return false;
+    if(shipped==='no'&&o.shipped)return false;
+    if(hideArrived&&o.instore)return false;
+    return true;
+  });
+}
+
+async function renderDashboard(){
+  const btnNew=document.getElementById('btn-new-order');
+  if(!isAdmin())btnNew.style.display='none';
+
+  const orders=await getFilteredOrders();
+  const tbody=document.getElementById('dash-tbody');
+  if(!orders.length){
+    tbody.innerHTML=`<tr><td colspan="13"><div class="empty-state"><div style="font-size:32px">📦</div><p>No orders found</p></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML=orders.map((o,i)=>{
+    const days=daysBetween(o.date,o.instore);
+    const canEditRow=canEdit();
+    const statusHtml=`<div class="status-checks">
+      <label><input type="checkbox" ${o.prod?'checked':''} ${canEditRow?'':'disabled'} onchange="toggleStatus('${o.id}','prod',this.checked)"/> Production</label>
+      <label><input type="checkbox" ${o.exw?'checked':''} ${canEditRow?'':'disabled'} onchange="toggleStatus('${o.id}','exw',this.checked)"/> Ex-Works</label>
+      <label><input type="checkbox" ${o.shipped?'checked':''} ${canEditRow?'':'disabled'} onchange="toggleStatus('${o.id}','shipped',this.checked)"/> Shipped</label>
+    </div>`;
+
+    const lastComment=o.comments&&o.comments.length?o.comments[o.comments.length-1]:'—';
+    const commentPreview=`<span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text2);cursor:pointer;text-decoration:underline dotted" onclick="openCommentModal('${o.id}')">${lastComment.length>30?lastComment.slice(0,30)+'…':lastComment}</span>`;
+
+    const actions=canEditRow
+      ?`<div style="display:flex;gap:6px"><button class="btn btn-navy btn-sm" onclick="openEditModal('${o.id}')">Edit</button><button class="btn btn-danger btn-sm" onclick="deleteOrder('${o.id}')">🗑</button></div>`
+      :'—';
+
+    return `<tr>
+      <td class="mono">${i+1}</td>
+      <td class="mono">${fmtDate(o.date)}</td>
+      <td>${o.supplier}</td>
+      <td>${o.country||'—'}</td>
+      <td>${o.product}</td>
+      <td class="mono">${o.qty}</td>
+      <td>
+        <span class="pill ${o.shipping==='Sea'?'pill-sea':'pill-air'}">${o.shipping}</span><br/>
+        <span class="pill ${o.type==='Chemical'?'pill-chem':'pill-nchem'}" style="margin-top:4px">${o.type}</span>
+        ${o.vessel?`<br/><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">${o.vessel}</span>`:''}
+      </td>
+      <td>${statusHtml}</td>
+      <td class="mono">${fmtDate(o.eta)}</td>
+      <td class="mono">${fmtDate(o.instore)}</td>
+      <td>${daysColor(days)}</td>
+      <td style="max-width:180px">${commentPreview}</td>
+      <td>${actions}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function toggleStatus(id,field,val){
+  await DB.updateOrder(id,{[field]:val});
+  toast(`Status updated`);
+}
+
+async function deleteOrder(id){
+  if(!confirm2('Delete this order? This is permanent.'))return;
+  await DB.deleteOrder(id);await renderDashboard();toast('Order deleted');
+}
+
+// ── Edit Modal ──
+async function openEditModal(id){
+  const orders=await DB.getOrders();
+  const o=orders.find(x=>x.id===id);
+  if(!o)return;
+  editingId=id;
+  document.getElementById('edit-date').value=o.date||'';
+  // populate supplier dropdown then set value
+  await populateSupplierDropdown('edit-supplier');
+  const sel=document.getElementById('edit-supplier');
+  const otherInput=document.getElementById('edit-supplier-other');
+  const knownSupplier=[...sel.options].some(opt=>opt.value===o.supplier&&opt.value!=='__other__'&&opt.value!=='');
+  if(knownSupplier){sel.value=o.supplier;otherInput.style.display='none';}
+  else if(o.supplier){sel.value='__other__';otherInput.style.display='block';otherInput.value=o.supplier;}
+  else{sel.value='';otherInput.style.display='none';}
+  document.getElementById('edit-country').value=o.country||'';
+  document.getElementById('edit-qty').value=o.qty||'';
+  document.getElementById('edit-product').value=o.product||'';
+  document.getElementById('edit-shipping').value=o.shipping||'Sea';
+  document.getElementById('edit-type').value=o.type||'Chemical';
+  document.getElementById('edit-vessel').value=o.vessel||'';
+  document.getElementById('edit-eta').value=o.eta||'';
+  document.getElementById('edit-instore').value=o.instore||'';
+  ['prod','exw','shipped'].forEach(f=>{
+    document.getElementById('edit-'+f).checked=o[f]||false;
+    document.getElementById('edit-'+f+'-lbl').textContent=o[f]?'Yes':'No';
+  });
+  document.getElementById('edit-modal').classList.add('show');
+}
+function closeEditModal(){document.getElementById('edit-modal').classList.remove('show');editingId=null}
+async function saveEditOrder(){
+  if(!editingId)return;
+  await DB.updateOrder(editingId,{
+    date:document.getElementById('edit-date').value,
+    supplier:getSupplierValue('edit-supplier','edit-supplier-other'),
+    country:document.getElementById('edit-country').value,
+    qty:document.getElementById('edit-qty').value,
+    product:document.getElementById('edit-product').value,
+    shipping:document.getElementById('edit-shipping').value,
+    type:document.getElementById('edit-type').value,
+    vessel:document.getElementById('edit-vessel').value,
+    eta:document.getElementById('edit-eta').value,
+    instore:document.getElementById('edit-instore').value,
+    prod:document.getElementById('edit-prod').checked,
+    exw:document.getElementById('edit-exw').checked,
+    shipped:document.getElementById('edit-shipped').checked
+  });
+  closeEditModal();await populateDashCountryFilter();await renderDashboard();toast('Order updated');
+}
+
+// ── Comment Modal ──
+async function openCommentModal(id){
+  commentOrderId=id;
+  const orders=await DB.getOrders();
+  const o=orders.find(x=>x.id===id);
+  if(!o)return;
+  renderCommentLog(o.comments||[]);
+  const addRow=document.getElementById('comment-add-row');
+  addRow.style.display=canEdit()?'flex':'none';
+  document.getElementById('comment-modal').classList.add('show');
+}
+function closeCommentModal(){document.getElementById('comment-modal').classList.remove('show');commentOrderId=null}
+function renderCommentLog(comments){
+  const log=document.getElementById('comment-log');
+  if(!comments.length){log.innerHTML='<p style="color:var(--muted);font-size:12px">No comments yet.</p>';return}
+  log.innerHTML=comments.map(c=>`<div class="comment-entry">${c}</div>`).join('');
+}
+async function addComment(){
+  const input=document.getElementById('comment-input');
+  const text=input.value.trim();
+  if(!text)return;
+  const orders=await DB.getOrders();
+  const o=orders.find(x=>x.id===commentOrderId);
+  if(!o)return;
+  const entry=`${todayPrefix()}${text}`;
+  const comments=[...(o.comments||[]),entry];
+  await DB.updateOrder(commentOrderId,{comments});
+  renderCommentLog(comments);
+  input.value='';
+  await renderDashboard();
+}
+
+// ══════════════════════════════════════════════════
+// ANALYTICS
+// ══════════════════════════════════════════════════
+async function initAnalytics(){
+  const sel=document.getElementById('analytics-year');
+  const curr=new Date().getFullYear();
+  const years=[curr,curr-1,curr-2,curr-3];
+  if(!sel.options.length){
+    sel.innerHTML=years.map(y=>`<option value="${y}">${y}</option>`).join('');
+  }
+  // country filter
+  const csel=document.getElementById('analytics-country');
+  const currC=csel.value;
+  const orders=await DB.getOrders();
+  const countries=[...new Set(orders.filter(o=>o.instore).map(o=>o.country).filter(Boolean))].sort();
+  csel.innerHTML='<option value="">All Countries</option>'+countries.map(c=>`<option value="${c}"${c===currC?' selected':''}>${c}</option>`).join('');
+}
+
+async function renderAnalytics(){
+  const year=Number(document.getElementById('analytics-year').value)||new Date().getFullYear();
+  const filterCountry=document.getElementById('analytics-country').value;
+  const allOrders=await DB.getOrders();
+  const orders=allOrders.filter(o=>{
+    if(!o.instore||!o.date)return false;
+    if(new Date(o.instore).getFullYear()!==year)return false;
+    if(filterCountry&&o.country!==filterCountry)return false;
+    return true;
+  });
+
+  const qOf=date=>{const m=new Date(date).getMonth();return m<3?0:m<6?1:m<9?2:3};
+  const countries=[...new Set(orders.map(o=>o.country||'Unknown'))].sort();
+  const data={};
+  countries.forEach(c=>{data[c]=[null,null,null,null]});
+
+  orders.forEach(o=>{
+    const c=o.country||'Unknown';
+    const q=qOf(o.instore);
+    const d=daysBetween(o.date,o.instore);
+    if(d===null)return;
+    if(!data[c][q])data[c][q]={sum:0,count:0};
+    data[c][q].sum+=d;data[c][q].count++;
+  });
+
+  // compute global avg per quarter
+  const globalQ=[0,1,2,3].map(q=>{
+    let sum=0,cnt=0;
+    countries.forEach(c=>{if(data[c][q]){sum+=data[c][q].sum;cnt+=data[c][q].count}});
+    return cnt?sum/cnt:null;
+  });
+
+  function heat(val,avg){
+    if(val===null||avg===null)return'';
+    if(val<=avg*0.9)return'heat-green';
+    if(val<=avg*1.1)return'heat-amber';
+    return'heat-red';
+  }
+
+  const tbody=document.getElementById('analytics-tbody');
+  if(!countries.length){
+    tbody.innerHTML=`<tr><td colspan="5"><div class="empty-state"><p>No completed orders for ${year}</p></div></td></tr>`;
+    return;
+  }
+
+  const rows=countries.map(c=>`<tr>
+    <td style="padding:10px 12px;font-weight:600">${c}</td>
+    ${[0,1,2,3].map(q=>{
+      const qd=data[c][q];
+      if(!qd)return`<td style="padding:8px 10px;text-align:center;color:var(--muted)">—</td>`;
+      const avg=qd.sum/qd.count;
+      const cls=heat(avg,globalQ[q]);
+      return`<td style="padding:8px 10px;text-align:center"><div class="analytics-cell ${cls}">${Math.round(avg)}d<br/><span style="font-size:10px;opacity:.7">(${qd.count} order${qd.count>1?'s':''})</span></div></td>`;
+    }).join('')}
+  </tr>`).join('');
+
+  // Overall avg row
+  const overallRow=`<tr style="border-top:2px solid var(--gold);background:rgba(201,168,76,.05)">
+    <td style="padding:10px 12px;font-weight:700;color:var(--gold)">Overall Avg</td>
+    ${[0,1,2,3].map(q=>globalQ[q]!==null?`<td style="padding:8px 10px;text-align:center"><div class="analytics-cell" style="background:rgba(201,168,76,.1);color:var(--gold)">${Math.round(globalQ[q])}d</div></td>`:`<td style="text-align:center;color:var(--muted)">—</td>`).join('')}
+  </tr>`;
+
+  tbody.innerHTML=rows+overallRow;
+}
+
+// ══════════════════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════════════════
+async function renderSettings(){
+  await renderUsersTable();await renderManagerChips();await renderUnitChips();await renderSupplierChips();
+}
+
+async function renderUsersTable(){
+  const tbody=document.getElementById('users-tbody');
+  const users=await DB.getUsers();
+  tbody.innerHTML=users.map(u=>`<tr>
+    <td>${u.username}</td>
+    <td><span class="role-pill ${u.role}">${roleCapital(u.role)}</span></td>
+    <td>${u.id.startsWith('root')?'<span style="color:var(--muted);font-size:11px">Protected</span>':`<button class="btn btn-danger btn-sm" onclick="removeUser('${u.id}')">Remove</button>`}</td>
+  </tr>`).join('');
+}
+
+async function addUser(){
+  const name=document.getElementById('new-user-name').value.trim();
+  const pass=document.getElementById('new-user-pass').value;
+  const role=document.getElementById('new-user-role').value;
+  if(!name||!pass){toast('Enter username and password','error');return}
+  const users=await DB.getUsers();
+  if(users.find(u=>u.username===name)){toast('Username already exists','error');return}
+  await DB.addUser({username:name,password:pass,role});
+  document.getElementById('new-user-name').value='';
+  document.getElementById('new-user-pass').value='';
+  await renderUsersTable();toast('User added');
+}
+
+async function removeUser(id){
+  if(!confirm2('Remove this user?'))return;
+  await DB.deleteUser(id);await renderUsersTable();toast('User removed');
+}
+
+async function renderManagerChips(){
+  const div=document.getElementById('managers-chips');
+  const mgrs=await DB.getManagers();
+  div.innerHTML=mgrs.length?mgrs.map((m,i)=>`<span class="chip">${m}<span class="chip-remove" onclick="removeManager(${i})">×</span></span>`).join(''):'<span style="color:var(--muted);font-size:12px">No managers added</span>';
+}
+
+async function addManager(){
+  const val=document.getElementById('new-manager').value.trim();
+  if(!val)return;
+  const a=await DB.getManagers();
+  if(a.includes(val)){toast('Manager already exists','error');return}
+  a.push(val);await DB.saveManagers(a);
+  document.getElementById('new-manager').value='';
+  await renderManagerChips();toast('Manager added');
+}
+
+async function removeManager(i){
+  const a=await DB.getManagers();a.splice(i,1);await DB.saveManagers(a);await renderManagerChips();toast('Manager removed');
+}
+
+async function renderUnitChips(){
+  const div=document.getElementById('units-chips');
+  const units=await DB.getUnits();
+  div.innerHTML=units.length?units.map((u,i)=>`<span class="chip">${u}<span class="chip-remove" onclick="removeUnit(${i})">×</span></span>`).join(''):'<span style="color:var(--muted);font-size:12px">No units added</span>';
+}
+
+async function addUnit(){
+  const val=document.getElementById('new-unit').value.trim();
+  if(!val)return;
+  const a=await DB.getUnits();
+  if(a.includes(val)){toast('Unit already exists','error');return}
+  a.push(val);await DB.saveUnits(a);
+  document.getElementById('new-unit').value='';
+  await renderUnitChips();toast('Unit added');
+}
+
+async function removeUnit(i){
+  const a=await DB.getUnits();a.splice(i,1);await DB.saveUnits(a);await renderUnitChips();toast('Unit removed');
+}
+
+async function renderSupplierChips(){
+  const div=document.getElementById('suppliers-chips');
+  const suppliers=await DB.getSuppliers();
+  div.innerHTML=suppliers.length?suppliers.map((s,i)=>`<span class="chip">${s}<span class="chip-remove" onclick="removeSupplier(${i})">×</span></span>`).join(''):'<span style="color:var(--muted);font-size:12px">No suppliers added yet</span>';
+}
+
+async function addSupplier(){
+  const val=document.getElementById('new-supplier').value.trim();
+  if(!val)return;
+  const a=await DB.getSuppliers();
+  if(a.includes(val)){toast('Supplier already exists','error');return}
+  a.push(val);await DB.saveSuppliers(a);
+  document.getElementById('new-supplier').value='';
+  await renderSupplierChips();toast('Supplier added');
+}
+
+async function removeSupplier(i){
+  const a=await DB.getSuppliers();a.splice(i,1);await DB.saveSuppliers(a);await renderSupplierChips();toast('Supplier removed');
+}
+
+// ══════════════════════════════════════════════════
+// LEAD TIME
+// ══════════════════════════════════════════════════
+async function initLeadTime(){
+  const yearSel=document.getElementById('lt-year');
+  const curr=new Date().getFullYear();
+  if(!yearSel.options.length){
+    [curr,curr-1,curr-2,curr-3].forEach(y=>{
+      const o=document.createElement('option');o.value=y;o.textContent=y;yearSel.appendChild(o);
+    });
+  }
+  // populate supplier filter
+  const supSel=document.getElementById('lt-supplier');
+  const currSup=supSel.value;
+  const orders=await DB.getOrders();
+  const suppliers=[...new Set(orders.filter(o=>o.instore&&o.date).map(o=>o.supplier).filter(Boolean))].sort();
+  supSel.innerHTML='<option value="">All Suppliers</option>'+suppliers.map(s=>`<option value="${s}"${s===currSup?' selected':''}>${s}</option>`).join('');
+}
+
+async function getLeadTimeOrders(){
+  const year=Number(document.getElementById('lt-year').value)||new Date().getFullYear();
+  const supplier=document.getElementById('lt-supplier').value;
+  const type=document.getElementById('lt-type').value;
+  const shipping=document.getElementById('lt-shipping').value;
+  const all=await DB.getOrders();
+  return all.filter(o=>{
+    if(!o.instore||!o.date)return false;
+    if(new Date(o.instore).getFullYear()!==year)return false;
+    if(supplier&&o.supplier!==supplier)return false;
+    if(type&&o.type!==type)return false;
+    if(shipping&&o.shipping!==shipping)return false;
+    return true;
+  }).map(o=>({...o,days:daysBetween(o.date,o.instore)})).filter(o=>o.days!==null&&o.days>=0);
+}
+
+async function renderLeadTime(){
+  const orders=await getLeadTimeOrders();
+  renderLTKpis(orders);
+  renderLTSupplierTable(orders);
+  renderLTMonthlyTable(orders);
+}
+
+function renderLTKpis(orders){
+  const container=document.getElementById('lt-kpis');
+  if(!orders.length){
+    container.innerHTML=`<div class="card" style="grid-column:1/-1;text-align:center;color:var(--muted);padding:32px">No completed orders found for the selected filters.</div>`;
+    return;
+  }
+  const days=orders.map(o=>o.days).sort((a,b)=>a-b);
+  const avg=Math.round(days.reduce((a,b)=>a+b,0)/days.length);
+  const min=days[0];
+  const max=days[days.length-1];
+  const median=days.length%2===0?(days[days.length/2-1]+days[days.length/2])/2:days[Math.floor(days.length/2)];
+  const sea=orders.filter(o=>o.shipping==='Sea');
+  const air=orders.filter(o=>o.shipping==='Air');
+  const avgSea=sea.length?Math.round(sea.reduce((a,o)=>a+o.days,0)/sea.length):null;
+  const avgAir=air.length?Math.round(air.reduce((a,o)=>a+o.days,0)/air.length):null;
+
+  const kpis=[
+    {label:'Overall Average',value:`${avg}d`,sub:`${orders.length} completed order${orders.length!==1?'s':''}`,color:'var(--gold)'},
+    {label:'Median',value:`${Math.round(median)}d`,sub:'50th percentile',color:'#63b3ed'},
+    {label:'Fastest',value:`${min}d`,sub:'Shortest lead time',color:'#68d391'},
+    {label:'Slowest',value:`${max}d`,sub:'Longest lead time',color:'#ff6b7a'},
+    ...(avgSea!==null?[{label:'Avg — Sea',value:`${avgSea}d`,sub:`${sea.length} order${sea.length!==1?'s':''}`,color:'#63b3ed'}]:[]),
+    ...(avgAir!==null?[{label:'Avg — Air',value:`${avgAir}d`,sub:`${air.length} order${air.length!==1?'s':''}`,color:'#b794f4'}]:[]),
+  ];
+  container.innerHTML=kpis.map(k=>`
+    <div class="card" style="padding:20px;margin-bottom:0;text-align:center">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">${k.label}</div>
+      <div style="font-size:32px;font-weight:700;font-family:'DM Mono',monospace;color:${k.color};line-height:1">${k.value}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px">${k.sub}</div>
+    </div>`).join('');
+}
+
+function renderLTSupplierTable(orders){
+  const tbody=document.getElementById('lt-supplier-tbody');
+  if(!orders.length){tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:32px;color:var(--muted)">No data</td></tr>`;return}
+  const globalAvg=orders.reduce((a,o)=>a+o.days,0)/orders.length;
+
+  // group by supplier
+  const map={};
+  orders.forEach(o=>{
+    const s=o.supplier||'Unknown';
+    if(!map[s])map[s]=[];
+    map[s].push(o.days);
+  });
+
+  const rows=Object.entries(map).sort((a,b)=>{
+    const avgA=a[1].reduce((x,y)=>x+y,0)/a[1].length;
+    const avgB=b[1].reduce((x,y)=>x+y,0)/b[1].length;
+    return avgA-avgB;
+  }).map(([supplier,dayArr])=>{
+    const avg=Math.round(dayArr.reduce((a,b)=>a+b,0)/dayArr.length);
+    const min=Math.min(...dayArr);
+    const max=Math.max(...dayArr);
+    const pct=Math.min(100,Math.round((avg/Math.max(globalAvg*2,max+1))*100));
+    const barColor=avg<=globalAvg*0.9?'var(--green)':avg<=globalAvg*1.1?'var(--amber)':'var(--red)';
+    const diffDays=Math.round(avg-globalAvg);
+    const diffLabel=diffDays===0?'= avg':diffDays>0?`+${diffDays}d vs avg`:`${diffDays}d vs avg`;
+    const diffColor=diffDays<=0?'#68d391':diffDays<=5?'#ffc107':'#ff6b7a';
+    return `<tr>
+      <td style="padding:10px 12px;font-weight:600">${supplier}</td>
+      <td style="padding:10px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px">${dayArr.length}</td>
+      <td style="padding:10px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:#68d391">${min}d</td>
+      <td style="padding:10px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:${barColor}">${avg}d</td>
+      <td style="padding:10px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:#ff6b7a">${max}d</td>
+      <td style="padding:10px 12px;min-width:160px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div style="flex:1;background:var(--navy);border-radius:4px;height:8px;overflow:hidden">
+            <div style="width:${pct}%;height:100%;background:${barColor};border-radius:4px;transition:width .4s"></div>
+          </div>
+          <span style="font-size:11px;color:${diffColor};white-space:nowrap;font-family:'DM Mono',monospace">${diffLabel}</span>
+        </div>
+      </td>
+    </tr>`;
+  });
+  tbody.innerHTML=rows.join('');
+}
+
+function renderLTMonthlyTable(orders){
+  const tbody=document.getElementById('lt-monthly-tbody');
+  const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  if(!orders.length){tbody.innerHTML=`<tr><td colspan="4" style="text-align:center;padding:32px;color:var(--muted)">No data</td></tr>`;return}
+
+  const globalAvg=orders.reduce((a,o)=>a+o.days,0)/orders.length;
+  const map={};
+  orders.forEach(o=>{
+    const m=new Date(o.instore).getMonth();
+    if(!map[m])map[m]=[];
+    map[m].push(o.days);
+  });
+
+  const rows=Object.entries(map).sort((a,b)=>Number(a[0])-Number(b[0])).map(([m,dayArr])=>{
+    const avg=Math.round(dayArr.reduce((a,b)=>a+b,0)/dayArr.length);
+    const diff=avg-Math.round(globalAvg);
+    const barW=Math.min(100,Math.round(Math.abs(diff)/Math.max(globalAvg,1)*100*3));
+    const isOver=diff>0;
+    const diffLabel=diff===0?'On average':isOver?`+${diff}d above avg`:`${Math.abs(diff)}d below avg`;
+    const diffColor=!isOver?'#68d391':diff<=5?'#ffc107':'#ff6b7a';
+    return `<tr>
+      <td style="padding:10px 12px;font-weight:600">${MONTHS[Number(m)]}</td>
+      <td style="padding:10px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px">${dayArr.length}</td>
+      <td style="padding:10px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:${diffColor}">${avg}d</td>
+      <td style="padding:10px 12px;min-width:200px">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;width:80px;text-align:right">${Math.round(globalAvg)}d avg</span>
+          <div style="flex:1;background:var(--navy);border-radius:4px;height:8px;overflow:hidden;position:relative">
+            <div style="position:absolute;${isOver?'left:0':'right:0'};width:${barW}%;height:100%;background:${diffColor};border-radius:4px"></div>
+          </div>
+          <span style="font-size:11px;color:${diffColor};white-space:nowrap;font-family:'DM Mono',monospace">${diffLabel}</span>
+        </div>
+      </td>
+    </tr>`;
+  });
+
+  // summary row
+  rows.push(`<tr style="border-top:2px solid var(--gold);background:rgba(201,168,76,.05)">
+    <td style="padding:10px 12px;font-weight:700;color:var(--gold)">Year Average</td>
+    <td style="padding:10px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:12px;color:var(--gold)">${orders.length}</td>
+    <td style="padding:10px 12px;text-align:center;font-family:'DM Mono',monospace;font-size:13px;font-weight:700;color:var(--gold)">${Math.round(globalAvg)}d</td>
+    <td style="padding:10px 12px;font-size:12px;color:var(--muted)">Based on ${orders.length} completed order${orders.length!==1?'s':''}</td>
+  </tr>`);
+
+  tbody.innerHTML=rows.join('');
+}
+
+// ══════════════════════════════════════════════════
+// PDF EXPORT
+// ══════════════════════════════════════════════════
+async function exportDashboardPDF(){
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+  const now=new Date();
+  const ts=now.toLocaleString();
+  const orders=await getFilteredOrders();
+
+  // Header
+  doc.setFillColor(15,27,45);doc.rect(0,0,297,20,'F');
+  doc.setTextColor(201,168,76);doc.setFontSize(13);doc.setFont('helvetica','bold');
+  doc.text('OrderTrack — Dashboard Report',14,13);
+  doc.setTextColor(180,190,210);doc.setFontSize(8);doc.setFont('helvetica','normal');
+  doc.text(`Exported: ${ts}`,200,13);
+
+  const head=[['#','Date','Supplier','Country','Product','Qty','Shipping','Type','ETA','In Store','Days','Shipped']];
+  const body=orders.map((o,i)=>[
+    i+1,fmtDate(o.date),o.supplier,o.country||'—',o.product,o.qty,
+    o.shipping,o.type,fmtDate(o.eta),fmtDate(o.instore),
+    o.date&&o.instore?daysBetween(o.date,o.instore)+'d':'—',
+    o.shipped?'Yes':'No'
+  ]);
+
+  doc.autoTable({
+    head,body,startY:24,
+    styles:{fontSize:6.5,cellPadding:2,font:'helvetica',textColor:[220,230,245]},
+    headStyles:{fillColor:[15,27,45],textColor:[201,168,76],fontStyle:'bold'},
+    alternateRowStyles:{fillColor:[22,34,54]},
+    bodyStyles:{fillColor:[20,30,48]},
+    margin:{left:10,right:10},
+    didDrawPage:(data)=>{
+      const pageCount=doc.internal.getNumberOfPages();
+      doc.setFontSize(7);doc.setTextColor(120,130,150);
+      doc.text(`Page ${data.pageNumber} of ${pageCount}`,260,200);
+      doc.text(`${yyyymmdd()}_Report_${hhmmss()}.pdf`,14,200);
+    }
+  });
+
+  doc.save(`${yyyymmdd()}_Report_${hhmmss()}.pdf`);
+  toast('PDF exported');
+}
+
+async function exportAnalyticsPDF(){
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const year=document.getElementById('analytics-year').value;
+  const now=new Date();
+
+  doc.setFillColor(15,27,45);doc.rect(0,0,210,22,'F');
+  doc.setTextColor(201,168,76);doc.setFontSize(13);doc.setFont('helvetica','bold');
+  doc.text('OrderTrack — Analytics Report',14,14);
+  doc.setTextColor(180,190,210);doc.setFontSize(8);doc.setFont('helvetica','normal');
+  doc.text(`Year: ${year}  |  ${now.toLocaleString()}`,14,20);
+
+  const filterCountry=document.getElementById('analytics-country').value;
+  const allOrders=await DB.getOrders();
+  const orders=allOrders.filter(o=>{
+    if(!o.instore||!o.date)return false;
+    if(new Date(o.instore).getFullYear()!==Number(year))return false;
+    if(filterCountry&&o.country!==filterCountry)return false;
+    return true;
+  });
+  const qOf=date=>{const m=new Date(date).getMonth();return m<3?0:m<6?1:m<9?2:3};
+  const countries=[...new Set(orders.map(o=>o.country||'Unknown'))].sort();
+  const data={};
+  countries.forEach(c=>{data[c]=[null,null,null,null]});
+  orders.forEach(o=>{
+    const c=o.country||'Unknown';const q=qOf(o.instore);const d=daysBetween(o.date,o.instore);
+    if(d===null)return;
+    if(!data[c][q])data[c][q]={sum:0,count:0};
+    data[c][q].sum+=d;data[c][q].count++;
+  });
+  const globalQ=[0,1,2,3].map(q=>{
+    let sum=0,cnt=0;
+    countries.forEach(c=>{if(data[c][q]){sum+=data[c][q].sum;cnt+=data[c][q].count}});
+    return cnt?sum/cnt:null;
+  });
+  function sym(val,avg){if(val===null||avg===null)return'—';if(val<=avg*.9)return'▼ '+Math.round(val)+'d';if(val<=avg*1.1)return'● '+Math.round(val)+'d';return'▲ '+Math.round(val)+'d'}
+  const head=[['Country','Q1 Jan–Mar','Q2 Apr–Jun','Q3 Jul–Sep','Q4 Oct–Dec']];
+  const body=countries.map(c=>[c,...[0,1,2,3].map(q=>{
+    const qd=data[c][q];if(!qd)return'—';
+    return sym(qd.sum/qd.count,globalQ[q])+` (${qd.count})`;
+  })]);
+  body.push(['Overall Avg',...[0,1,2,3].map(q=>globalQ[q]!==null?Math.round(globalQ[q])+'d':'—')]);
+
+  doc.autoTable({
+    head,body,startY:28,
+    styles:{fontSize:8.5,cellPadding:3,font:'helvetica',textColor:[220,230,245],halign:'center'},
+    headStyles:{fillColor:[15,27,45],textColor:[201,168,76],fontStyle:'bold',halign:'center'},
+    columnStyles:{0:{halign:'left'}},
+    alternateRowStyles:{fillColor:[22,34,54]},
+    bodyStyles:{fillColor:[20,30,48]},
+    margin:{left:14,right:14},
+    didDrawPage:(data)=>{
+      const pageCount=doc.internal.getNumberOfPages();
+      doc.setFontSize(7);doc.setTextColor(120,130,150);
+      doc.text(`Page ${data.pageNumber} of ${pageCount}`,180,288);
+    }
+  });
+
+  doc.save(`${yyyymmdd()}_Report_${hhmmss()}.pdf`);
+  toast('Analytics PDF exported');
+}
+
+// ══════════════════════════════════════════════════
+// MODAL OVERLAYS CLOSE ON BACKDROP
+// ══════════════════════════════════════════════════
+document.querySelectorAll('.modal-overlay').forEach(overlay=>{
+  overlay.addEventListener('click',e=>{
+    if(e.target===overlay){
+      overlay.classList.remove('show');
+      approvingId=null;editingId=null;commentOrderId=null;
+    }
+  });
+});
+
+// toggle label sync for edit modal
+['edit-prod','edit-exw','edit-shipped'].forEach(id=>{
+  const el=document.getElementById(id);
+  el.addEventListener('change',()=>{
+    document.getElementById(id+'-lbl').textContent=el.checked?'Yes':'No';
+  });
+});
+</script>
+</body>
+</html>
