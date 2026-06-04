@@ -42,11 +42,11 @@ body.light-mode{
 body.light-mode .topbar{background:#ffffff;border-bottom:1px solid #cbd5e0}
 body.light-mode .user-badge{background:#f0f4f8;border-color:#cbd5e0}
 body.light-mode .nav-tab:hover{background:rgba(0,0,0,.05);color:#1a202c}
-body.light-mode thead{background:#f0f4f8}
+body.light-mode thead{background:#f0f4f8}body.light-mode thead th{background:#f0f4f8}
 body.light-mode tr:hover td{background:rgba(0,0,0,.025)}
 body.light-mode .slider{background:#cbd5e0;border-color:#b0bed0}
 body.light-mode .slider:before{background:#64748b}
-body.light-mode .filter-bar input,body.light-mode .filter-bar select{background:#f0f4f8;border-color:#cbd5e0;color:#1a202c}
+body.light-mode .filter-bar{background:#f0f4f8}body.light-mode .filter-bar input,body.light-mode .filter-bar select{background:#f0f4f8;border-color:#cbd5e0;color:#1a202c}
 body.light-mode .form-field input,body.light-mode .form-field select,body.light-mode .form-field textarea{background:#f0f4f8;border-color:#cbd5e0;color:#1a202c}
 body.light-mode .form-field select option{background:#ffffff;color:#1a202c}
 body.light-mode .modal{background:#ffffff}
@@ -69,6 +69,20 @@ body.light-mode .settings-table td{border-bottom-color:rgba(203,213,224,.4)}
 body.light-mode .comment-entry{border-bottom-color:#cbd5e0}
 body.light-mode .filter-bar .toggle-hide{background:#f0f4f8;border-color:#cbd5e0;color:#64748b}
 body.light-mode .filter-bar .toggle-hide.active{background:rgba(201,168,76,.15);border-color:var(--gold);color:var(--gold)}
+body.light-mode #page-settings input,body.light-mode #page-settings select{background:#f0f4f8;border-color:#cbd5e0;color:#1a202c}
+body.light-mode #page-settings .card-title{color:#1a202c}
+body.light-mode #page-settings h2{color:#1a202c}
+body.light-mode .settings-table th{color:#4a5568}
+body.light-mode .settings-table td{color:#1a202c}
+body.light-mode .chip{color:#1a202c}
+body.light-mode .analytics-cell{color:#1a202c}
+body.light-mode #page-analytics select,body.light-mode #page-leadtime select{background:#f0f4f8;border-color:#cbd5e0;color:#1a202c}
+body.light-mode #page-analytics h2,body.light-mode #page-leadtime h2,body.light-mode #page-dashboard h2,body.light-mode #page-po h2{color:#1a202c}
+body.light-mode .section-header{background:#f0f4f8}
+body.light-mode .card-title{color:#1a202c}
+body.light-mode .card-sticky .card-title{background:#ffffff}
+body.light-mode .settings-table-wrap thead th{background:#f0f4f8}
+body.light-mode .section-header h2{color:#1a202c}
 /* theme toggle button */
 .theme-toggle{display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--navy3);border:1px solid var(--border);border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);transition:all .2s;user-select:none;white-space:nowrap}
 .theme-toggle:hover{color:var(--text);border-color:var(--gold)}
@@ -100,7 +114,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
 .login-err{color:#ff6b7a;font-size:12px;margin-top:8px;display:none}
 /* ── APP SHELL ── */
 #app{display:none;flex-direction:column;min-height:100vh}
-.topbar{background:var(--navy2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:stretch;height:56px}
+.topbar{background:var(--navy2);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:stretch;height:56px;position:sticky;top:0;z-index:100}
 .topbar-brand{display:flex;align-items:center;font-size:16px;font-weight:700;color:var(--white);padding-right:32px;border-right:1px solid var(--border);margin-right:8px}
 .topbar-brand span{color:var(--gold)}
 .nav-tabs{display:flex;align-items:stretch;flex:1;gap:2px}
@@ -118,6 +132,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
 /* ── CARDS / PANELS ── */
 .card{background:var(--navy2);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px}
 .card-title{font-size:15px;font-weight:700;color:var(--white);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.card-sticky{overflow-y:auto;max-height:420px}
+.card-sticky .card-title{position:sticky;top:0;z-index:20;background:var(--navy2);padding-bottom:12px;margin-bottom:8px}
+.settings-table-wrap{overflow-y:auto;max-height:280px}
+.settings-table-wrap thead th{position:sticky;top:0;z-index:10;background:var(--navy);padding:8px 12px}
 /* ── FORMS ── */
 .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:16px}
 .form-grid-2{grid-template-columns:repeat(2,1fr)}
@@ -131,7 +149,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
 /* ── TABLE ── */
 .tbl-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
 table{width:100%;border-collapse:collapse;font-size:12.5px}
-thead{background:var(--navy)}
+thead{background:var(--navy)}thead th{position:sticky;top:56px;z-index:10;background:var(--navy)}
 th{padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;border-bottom:1px solid var(--border)}
 td{padding:10px 12px;border-bottom:1px solid rgba(35,48,69,.6);vertical-align:middle}
 tr:last-child td{border-bottom:none}
@@ -146,6 +164,9 @@ tr:hover td{background:rgba(255,255,255,.025)}
 .pill-air{background:rgba(159,122,234,.15);color:#b794f4}
 .pill-chem{background:rgba(245,101,101,.15);color:#fc8181}
 .pill-nchem{background:rgba(72,187,120,.15);color:#68d391}
+.pill-pc{background:rgba(99,179,237,.15);color:#63b3ed}
+.pill-hyg{background:rgba(159,122,234,.15);color:#b794f4}
+.pill-sb{background:rgba(246,173,85,.15);color:#f6ad55}
 /* ── TOGGLE ── */
 .toggle-wrap{display:flex;align-items:center;gap:8px}
 .toggle{position:relative;display:inline-block;width:38px;height:20px;flex-shrink:0}
@@ -155,7 +176,7 @@ tr:hover td{background:rgba(255,255,255,.025)}
 input:checked+.slider{background:var(--gold);border-color:var(--gold)}
 input:checked+.slider:before{transform:translateX(18px);background:var(--navy)}
 /* ── FILTER BAR ── */
-.filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
+.filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px;position:sticky;top:108px;z-index:40;background:var(--navy);padding:8px 0}
 .filter-bar input,.filter-bar select{padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none}
 .filter-bar input:focus,.filter-bar select:focus{border-color:var(--gold)}
 .filter-bar .toggle-hide{display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);transition:all .2s;user-select:none}
@@ -202,7 +223,7 @@ input:checked+.slider:before{transform:translateX(18px);background:var(--navy)}
 .status-checks label{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2);cursor:pointer;white-space:nowrap}
 .status-checks input[type=checkbox]{accent-color:var(--gold)}
 /* ── SECTION HEADER ── */
-.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;position:sticky;top:56px;z-index:50;background:var(--navy);padding:12px 0;margin-top:-4px}
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
   .main{padding:12px}
@@ -280,13 +301,13 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
     <!-- PURCHASE ORDERS -->
     <div id="page-po" style="display:none">
       <div class="section-header">
-        <h2 style="font-size:18px;font-weight:700;color:var(--white)">Purchase Orders</h2>
-        <button id="btn-new-po" class="btn btn-gold" onclick="togglePOForm()">+ New Purchase Request</button>
+        <h2 style="font-size:18px;font-weight:700;color:var(--white)">Request To Purchase</h2>
+        <button id="btn-new-po" class="btn btn-gold" onclick="togglePOForm()">+ New Request</button>
       </div>
 
       <!-- PO Form -->
       <div id="po-form-wrap" class="card collapsible">
-        <div class="card-title">New Purchase Request</div>
+        <div class="card-title">New Purchase Request To Purchase</div>
         <div class="form-grid">
           <div class="form-field"><label>Request Date</label><input type="date" id="po-date"/></div>
           <div class="form-field"><label>Supplier Name</label>
@@ -365,6 +386,9 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
           <div class="form-field"><label>Product Type</label>
             <select id="ord-type"><option value="Chemical">Chemical</option><option value="Non-Chemical">Non-Chemical</option></select>
           </div>
+          <div class="form-field"><label>Business Unit</label>
+            <select id="ord-bu"><option value="">— Select BU —</option><option value="Pest Control">Pest Control</option><option value="Hygiene">Hygiene</option><option value="Speciality Business">Speciality Business</option></select>
+          </div>
           <div class="form-field"><label>Ship Name / Flight No.</label><input type="text" id="ord-vessel"/></div>
           <div class="form-field"><label>ETA</label><input type="date" id="ord-eta"/></div>
           <div class="form-field"><label>Available in Store</label><input type="date" id="ord-instore"/></div>
@@ -415,6 +439,9 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
         <select id="dash-shipped" onchange="renderDashboard()">
           <option value="">All Shipped</option><option value="yes">Shipped: Yes</option><option value="no">Shipped: No</option>
         </select>
+        <select id="dash-bu" onchange="renderDashboard()">
+          <option value="">All BUs</option><option value="Pest Control">Pest Control</option><option value="Hygiene">Hygiene</option><option value="Speciality Business">Speciality Business</option>
+        </select>
         <div class="toggle-hide" id="hide-arrived-btn" onclick="toggleHideArrived()">👁 Hide Arrived</div>
         <button class="btn btn-navy btn-sm" onclick="clearDashFilters()">Clear</button>
       </div>
@@ -424,7 +451,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
           <thead>
             <tr>
               <th>#</th><th>Order Date</th><th>Supplier</th><th>Country</th><th>Product</th>
-              <th>Qty</th><th>Shipping</th><th>Status</th><th>ETA</th><th>In Store</th>
+              <th>Qty</th><th>Shipping</th><th>BU</th><th>Status</th><th>ETA</th><th>In Store</th>
               <th>Days</th><th>Comments</th><th>Actions</th>
             </tr>
           </thead>
@@ -534,12 +561,12 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px">
         <!-- User Management -->
-        <div class="card">
+        <div class="card card-sticky">
           <div class="card-title">User Management</div>
-          <table class="settings-table" style="margin-bottom:16px">
+          <div class="settings-table-wrap" style="margin-bottom:16px"><table class="settings-table">
             <thead><tr><th>Username</th><th>Role</th><th></th></tr></thead>
             <tbody id="users-tbody"></tbody>
-          </table>
+          </table></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
             <input type="text" id="new-user-name" placeholder="Username" style="padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none"/>
             <input type="password" id="new-user-pass" placeholder="Password" style="padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none"/>
@@ -553,7 +580,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
           </div>
         </div>
         <!-- Manager Names -->
-        <div class="card">
+        <div class="card card-sticky">
           <div class="card-title">Manager Names</div>
           <div class="chip-list" id="managers-chips"></div>
           <div style="display:flex;gap:8px;margin-top:8px">
@@ -562,7 +589,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
           </div>
         </div>
         <!-- Quantity Units -->
-        <div class="card">
+        <div class="card card-sticky">
           <div class="card-title">Quantity Units</div>
           <div class="chip-list" id="units-chips"></div>
           <div style="display:flex;gap:8px;margin-top:8px">
@@ -571,7 +598,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
           </div>
         </div>
         <!-- Suppliers -->
-        <div class="card">
+        <div class="card card-sticky">
           <div class="card-title">Suppliers</div>
           <div class="chip-list" id="suppliers-chips"></div>
           <div style="display:flex;gap:8px;margin-top:8px">
@@ -618,6 +645,9 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
       </div>
       <div class="form-field"><label>Product Type</label>
         <select id="edit-type"><option value="Chemical">Chemical</option><option value="Non-Chemical">Non-Chemical</option></select>
+      </div>
+      <div class="form-field"><label>Business Unit</label>
+        <select id="edit-bu"><option value="">— Select BU —</option><option value="Pest Control">Pest Control</option><option value="Hygiene">Hygiene</option><option value="Speciality Business">Speciality Business</option></select>
       </div>
       <div class="form-field"><label>Vessel / Flight No.</label><input type="text" id="edit-vessel"/></div>
       <div class="form-field"><label>ETA</label><input type="date" id="edit-eta"/></div>
@@ -918,7 +948,7 @@ function initApp(){
 
 function buildNav(){
   const tabs=[
-    {id:'po',label:'Purchase Orders',roles:['superuser','admin','manager']},
+    {id:'po',label:'Request To Purchase',roles:['superuser','admin','manager']},
     {id:'dashboard',label:'Dashboard',roles:['superuser','admin','manager','user']},
     {id:'analytics',label:'Analytics',roles:['superuser','admin','manager','user']},
     {id:'leadtime',label:'Lead Time',roles:['superuser','admin','manager','user']},
@@ -1159,6 +1189,7 @@ async function saveOrder(){
     shipped:document.getElementById('ord-shipped').checked,
     eta:document.getElementById('ord-eta').value,
     instore:document.getElementById('ord-instore').value,
+    bu:document.getElementById('ord-bu').value,
     comments
   });
   toggleOrderForm(false);
@@ -1174,6 +1205,7 @@ function clearOrderForm(){
   document.getElementById('ord-date').value=today();
   document.getElementById('ord-shipping').value='Sea';
   document.getElementById('ord-type').value='Chemical';
+  document.getElementById('ord-bu').value='';
 }
 
 async function populateDashCountryFilter(){
@@ -1197,6 +1229,7 @@ async function clearDashFilters(){
   document.getElementById('dash-shipping').value='';
   document.getElementById('dash-type').value='';
   document.getElementById('dash-shipped').value='';
+  document.getElementById('dash-bu').value='';
   hideArrived=false;
   document.getElementById('hide-arrived-btn').classList.remove('active');
   await renderDashboard();
@@ -1208,6 +1241,7 @@ async function getFilteredOrders(){
   const shipping=document.getElementById('dash-shipping').value;
   const type=document.getElementById('dash-type').value;
   const shipped=document.getElementById('dash-shipped').value;
+  const bu=document.getElementById('dash-bu').value;
   const all=await DB.getOrders();
   return all.filter(o=>{
     if(search&&!o.product.toLowerCase().includes(search)&&!o.supplier.toLowerCase().includes(search))return false;
@@ -1216,6 +1250,7 @@ async function getFilteredOrders(){
     if(type&&o.type!==type)return false;
     if(shipped==='yes'&&!o.shipped)return false;
     if(shipped==='no'&&o.shipped)return false;
+    if(bu&&o.bu!==bu)return false;
     if(hideArrived&&o.instore)return false;
     return true;
   });
@@ -1228,7 +1263,7 @@ async function renderDashboard(){
   const orders=await getFilteredOrders();
   const tbody=document.getElementById('dash-tbody');
   if(!orders.length){
-    tbody.innerHTML=`<tr><td colspan="13"><div class="empty-state"><div style="font-size:32px">📦</div><p>No orders found</p></div></td></tr>`;
+    tbody.innerHTML=`<tr><td colspan="14"><div class="empty-state"><div style="font-size:32px">📦</div><p>No orders found</p></div></td></tr>`;
     return;
   }
   tbody.innerHTML=orders.map((o,i)=>{
@@ -1259,6 +1294,7 @@ async function renderDashboard(){
         <span class="pill ${o.type==='Chemical'?'pill-chem':'pill-nchem'}" style="margin-top:4px">${o.type}</span>
         ${o.vessel?`<br/><span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)">${o.vessel}</span>`:''}
       </td>
+      <td>${o.bu?`<span class="pill ${o.bu==='Pest Control'?'pill-pc':o.bu==='Hygiene'?'pill-hyg':'pill-sb'}" style="font-size:10px">${o.bu}</span>`:'—'}</td>
       <td>${statusHtml}</td>
       <td class="mono">${fmtDate(o.eta)}</td>
       <td class="mono">${fmtDate(o.instore)}</td>
@@ -1302,6 +1338,7 @@ async function openEditModal(id){
   document.getElementById('edit-vessel').value=o.vessel||'';
   document.getElementById('edit-eta').value=o.eta||'';
   document.getElementById('edit-instore').value=o.instore||'';
+  document.getElementById('edit-bu').value=o.bu||'';
   ['prod','exw','shipped'].forEach(f=>{
     document.getElementById('edit-'+f).checked=o[f]||false;
     document.getElementById('edit-'+f+'-lbl').textContent=o[f]?'Yes':'No';
@@ -1324,7 +1361,8 @@ async function saveEditOrder(){
     instore:document.getElementById('edit-instore').value,
     prod:document.getElementById('edit-prod').checked,
     exw:document.getElementById('edit-exw').checked,
-    shipped:document.getElementById('edit-shipped').checked
+    shipped:document.getElementById('edit-shipped').checked,
+    bu:document.getElementById('edit-bu').value
   });
   closeEditModal();await populateDashCountryFilter();await renderDashboard();toast('Order updated');
 }
