@@ -42,11 +42,11 @@ body.light-mode{
 body.light-mode .topbar{background:#ffffff;border-bottom:1px solid #cbd5e0}
 body.light-mode .user-badge{background:#f0f4f8;border-color:#cbd5e0}
 body.light-mode .nav-tab:hover{background:rgba(0,0,0,.05);color:#1a202c}
-body.light-mode thead{background:#f0f4f8}body.light-mode thead th{background:#f0f4f8}
+body.light-mode thead{background:#f0f4f8}
 body.light-mode tr:hover td{background:rgba(0,0,0,.025)}
 body.light-mode .slider{background:#cbd5e0;border-color:#b0bed0}
 body.light-mode .slider:before{background:#64748b}
-body.light-mode .filter-bar{background:#f0f4f8}body.light-mode .filter-bar input,body.light-mode .filter-bar select{background:#f0f4f8;border-color:#cbd5e0;color:#1a202c}
+body.light-mode .filter-bar input,body.light-mode .filter-bar select{background:#f0f4f8;border-color:#cbd5e0;color:#1a202c}
 body.light-mode .form-field input,body.light-mode .form-field select,body.light-mode .form-field textarea{background:#f0f4f8;border-color:#cbd5e0;color:#1a202c}
 body.light-mode .form-field select option{background:#ffffff;color:#1a202c}
 body.light-mode .modal{background:#ffffff}
@@ -78,7 +78,6 @@ body.light-mode .chip{color:#1a202c}
 body.light-mode .analytics-cell{color:#1a202c}
 body.light-mode #page-analytics select,body.light-mode #page-leadtime select{background:#f0f4f8;border-color:#cbd5e0;color:#1a202c}
 body.light-mode #page-analytics h2,body.light-mode #page-leadtime h2,body.light-mode #page-dashboard h2,body.light-mode #page-po h2{color:#1a202c}
-body.light-mode .section-header{background:#f0f4f8}
 body.light-mode .card-title{color:#1a202c}
 body.light-mode .card-sticky .card-title{background:#ffffff}
 body.light-mode .settings-table-wrap thead th{background:#f0f4f8}
@@ -148,8 +147,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--text);m
 .form-actions{display:flex;gap:10px;padding-top:4px}
 /* ── TABLE ── */
 .tbl-wrap{overflow-x:auto;border-radius:8px;border:1px solid var(--border)}
+/* Sticky table headers — stick just below the fixed topbar (56px) */
+#dash-table thead th,
+#po-table thead th,
+#analytics-table thead th,
+#lt-supplier-table thead th,
+#lt-monthly-table thead th,
+.settings-table thead th{position:sticky;top:56px;z-index:10;background:var(--navy);box-shadow:0 1px 0 var(--border)}
+body.light-mode #dash-table thead th,
+body.light-mode #po-table thead th,
+body.light-mode #analytics-table thead th,
+body.light-mode #lt-supplier-table thead th,
+body.light-mode #lt-monthly-table thead th,
+body.light-mode .settings-table thead th{background:#f0f4f8}
 table{width:100%;border-collapse:collapse;font-size:12.5px}
-thead{background:var(--navy)}thead th{position:sticky;top:56px;z-index:10;background:var(--navy)}
+thead{background:var(--navy)}
 th{padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;border-bottom:1px solid var(--border)}
 td{padding:10px 12px;border-bottom:1px solid rgba(35,48,69,.6);vertical-align:middle}
 tr:last-child td{border-bottom:none}
@@ -176,7 +188,7 @@ tr:hover td{background:rgba(255,255,255,.025)}
 input:checked+.slider{background:var(--gold);border-color:var(--gold)}
 input:checked+.slider:before{transform:translateX(18px);background:var(--navy)}
 /* ── FILTER BAR ── */
-.filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px;position:sticky;top:108px;z-index:40;background:var(--navy);padding:8px 0}
+.filter-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
 .filter-bar input,.filter-bar select{padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;outline:none}
 .filter-bar input:focus,.filter-bar select:focus{border-color:var(--gold)}
 .filter-bar .toggle-hide{display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);transition:all .2s;user-select:none}
@@ -223,7 +235,7 @@ input:checked+.slider:before{transform:translateX(18px);background:var(--navy)}
 .status-checks label{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2);cursor:pointer;white-space:nowrap}
 .status-checks input[type=checkbox]{accent-color:var(--gold)}
 /* ── SECTION HEADER ── */
-.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;position:sticky;top:56px;z-index:50;background:var(--navy);padding:12px 0;margin-top:-4px}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
   .main{padding:12px}
@@ -474,7 +486,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
       </div>
       <div class="card">
         <div style="overflow-x:auto">
-          <table id="analytics-table" style="width:100%;border-collapse:collapse">
+          <table id="analytics-table" style="width:100%;border-collapse:collapse;background:var(--navy)">
             <thead>
               <tr style="border-bottom:1px solid var(--border)">
                 <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Country</th>
@@ -519,7 +531,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
       <div class="card" style="margin-bottom:20px">
         <div class="card-title">Average Lead Time by Supplier</div>
         <div style="overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse">
+          <table id="lt-supplier-table" style="width:100%;border-collapse:collapse">
             <thead>
               <tr style="border-bottom:1px solid var(--border)">
                 <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Supplier</th>
@@ -539,7 +551,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
       <div class="card">
         <div class="card-title">Monthly Average Lead Time</div>
         <div style="overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse">
+          <table id="lt-monthly-table" style="width:100%;border-collapse:collapse">
             <thead>
               <tr style="border-bottom:1px solid var(--border)">
                 <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Month</th>
