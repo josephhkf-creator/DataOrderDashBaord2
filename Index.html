@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<!-- saved from url=(0040)https://dataorderdashboard2.netlify.app/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>OrderTrack</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<link href="./OrderTrack_files/css2" rel="stylesheet">
+<script src="./OrderTrack_files/jspdf.umd.min.js.download"></script>
+<script src="./OrderTrack_files/jspdf.plugin.autotable.min.js.download"></script>
 <style>
 :root{
   --navy:#0f1b2d;
@@ -265,46 +265,46 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .settings-table tr:last-child td{border-bottom:none}
 </style>
 </head>
-<body>
+<body class="light-mode">
 
 <!-- LOGIN -->
-<div id="login-screen">
+<div id="login-screen" style="display: none;">
   <div class="login-box">
     <div class="login-logo">
       <h1>Order<span>Track</span></h1>
       <p>International Order Management</p>
     </div>
     <div class="role-tabs" id="role-tabs">
-      <button class="role-tab active" data-role="user">User</button>
+      <button class="role-tab" data-role="user">User</button>
       <button class="role-tab" data-role="superuser">Superuser</button>
-      <button class="role-tab" data-role="admin">Admin</button>
+      <button class="role-tab active" data-role="admin">Admin</button>
       <button class="role-tab" data-role="manager">Manager</button>
     </div>
     <div class="form-group">
       <label>Username</label>
-      <input type="text" id="login-username" autocomplete="off"/>
+      <input type="text" id="login-username" autocomplete="off">
     </div>
     <div class="form-group">
       <label>Password</label>
-      <input type="password" id="login-password"/>
+      <input type="password" id="login-password">
     </div>
-    <div class="login-err" id="login-err">Invalid credentials. Please try again.</div>
-    <button class="btn btn-gold btn-full" style="margin-top:8px" onclick="doLogin()">Sign In</button>
+    <div class="login-err" id="login-err" style="display: none;">Invalid credentials. Please try again.</div>
+    <button class="btn btn-gold btn-full" style="margin-top:8px" onclick="doLogin()" disabled="">Signing in…</button>
   </div>
 </div>
 
 <!-- APP -->
-<div id="app" style="display:none;flex-direction:column;min-height:100vh">
+<div id="app" style="display: flex; flex-direction: column; min-height: 100vh;">
   <div class="topbar">
     <div class="topbar-brand">Order<span style="color:var(--gold)">Track</span></div>
-    <div class="nav-tabs" id="nav-tabs"></div>
+    <div class="nav-tabs" id="nav-tabs"><div class="nav-tab active" data-page="po">Request To Purchase</div><div class="nav-tab" data-page="dashboard">Dashboard</div><div class="nav-tab" data-page="analytics">Analytics</div><div class="nav-tab" data-page="leadtime">Lead Time</div><div class="nav-tab" data-page="settings">⚙ Settings</div></div>
     <div class="topbar-right">
       <div class="user-badge">
-        <span id="nav-username" style="font-size:13px;font-weight:600"></span>
-        <span id="nav-rolepill" class="role-pill"></span>
+        <span id="nav-username" style="font-size:13px;font-weight:600">sysadmin</span>
+        <span id="nav-rolepill" class="role-pill admin">Admin</span>
       </div>
       <div class="theme-toggle" id="theme-toggle-btn" onclick="toggleTheme()" title="Switch light/dark mode">
-        <span id="theme-icon">☀️</span><span id="theme-label">Light</span>
+        <span id="theme-icon">🌙</span><span id="theme-label">Dark</span>
       </div>
       <button class="btn btn-navy btn-sm" onclick="doLogout()">Sign Out</button>
     </div>
@@ -312,7 +312,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 
   <div class="main">
     <!-- PURCHASE ORDERS -->
-    <div id="page-po" style="display:none">
+    <div id="page-po" style="display: block;">
       <div class="section-header">
         <h2 style="font-size:18px;font-weight:700;color:var(--white)">Request To Purchase</h2>
         <button id="btn-new-po" class="btn btn-gold" onclick="togglePOForm()">+ New Request</button>
@@ -322,28 +322,28 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
       <div id="po-form-wrap" class="card collapsible">
         <div class="card-title">New Purchase Request To Purchase</div>
         <div class="form-grid">
-          <div class="form-field"><label>Request Date</label><input type="date" id="po-date"/></div>
+          <div class="form-field"><label>Request Date</label><input type="date" id="po-date"></div>
           <div class="form-field"><label>Supplier Name</label>
-            <select id="po-supplier" onchange="handleSupplierSelect('po-supplier','po-supplier-other')"></select>
-            <input type="text" id="po-supplier-other" placeholder="Enter supplier name..." style="display:none;margin-top:6px;width:100%;padding:9px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none"/>
+            <select id="po-supplier" onchange="handleSupplierSelect(&#39;po-supplier&#39;,&#39;po-supplier-other&#39;)"></select>
+            <input type="text" id="po-supplier-other" placeholder="Enter supplier name..." style="display:none;margin-top:6px;width:100%;padding:9px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:&#39;DM Sans&#39;,sans-serif;font-size:13px;outline:none">
           </div>
-          <div class="form-field"><label>Product Name</label><input type="text" id="po-product"/></div>
-          <div class="form-field"><label>Quantity</label><input type="number" id="po-qty"/></div>
+          <div class="form-field"><label>Product Name</label><input type="text" id="po-product"></div>
+          <div class="form-field"><label>Quantity</label><input type="number" id="po-qty"></div>
           <div class="form-field"><label>Units</label><select id="po-units"></select></div>
-          <div class="form-field"><label>Current Stock</label><input type="number" id="po-stock"/></div>
+          <div class="form-field"><label>Current Stock</label><input type="number" id="po-stock"></div>
           <div class="form-field"><label>Product Type</label>
             <select id="po-type"><option value="Chemical">Chemical</option><option value="Non-Chemical">Non-Chemical</option></select>
           </div>
-          <div class="form-field"><label>Reorder Level</label><input type="number" id="po-reorder"/></div>
-          <div class="form-field"><label>Consumption Rate</label><input type="number" id="po-cons-rate" placeholder="e.g. 200"/></div>
+          <div class="form-field"><label>Reorder Level</label><input type="number" id="po-reorder"></div>
+          <div class="form-field"><label>Consumption Rate</label><input type="number" id="po-cons-rate" placeholder="e.g. 200"></div>
           <div class="form-field"><label>Rate Period</label>
             <select id="po-cons-period">
               <option value="Day">per Day</option>
               <option value="Week">per Week</option>
-              <option value="Month" selected>per Month</option>
+              <option value="Month" selected="">per Month</option>
             </select>
           </div>
-          <div class="form-field"><label>As At Date</label><input type="date" id="po-cons-date"/></div>
+          <div class="form-field"><label>As At Date</label><input type="date" id="po-cons-date"></div>
         </div>
         <div class="form-field" style="margin-bottom:14px">
           <label>Approved By (select manager/s)</label>
@@ -366,13 +366,325 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
               <th>Approved By</th><th>Status</th><th>Actions</th>
             </tr>
           </thead>
-          <tbody id="po-tbody"></tbody>
+          <tbody id="po-tbody"><tr>
+      <td class="mono">1</td>
+      <td class="mono">03/06/2026</td>
+      <td>Rentokil Initial UK</td>
+      <td>Lumnia B ILT machine</td>
+      <td>50 pieces</td>
+      <td class="mono">10</td>
+      <td><span class="pill pill-nchem">Non-Chemical</span></td>
+      <td class="mono">10</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">10 pieces/Month</span><br><span style="color:var(--muted);font-size:10px">as at 03/06/2026</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780471901520_6xytylby6x&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">2</td>
+      <td class="mono">03/06/2026</td>
+      <td>Rentokil Initial UK</td>
+      <td>Glue board lumnia</td>
+      <td>3000 pieces</td>
+      <td class="mono">500</td>
+      <td><span class="pill pill-nchem">Non-Chemical</span></td>
+      <td class="mono">500</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">150 pieces/Month</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780471950063_uvampzlu49i&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">3</td>
+      <td class="mono">03/06/2026</td>
+      <td>PELSIS</td>
+      <td>Glue board illume</td>
+      <td>3000 pieces</td>
+      <td class="mono">900</td>
+      <td><span class="pill pill-nchem">Non-Chemical</span></td>
+      <td class="mono">600</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">100 pieces/Month</span><br><span style="color:var(--muted);font-size:10px">as at 02/06/2026</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780472015134_5mrivzdum34&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">4</td>
+      <td class="mono">03/06/2026</td>
+      <td>GLORIA HAUS- &amp; GARTENGERAETE GMBH</td>
+      <td>Pump rod cpl. oil resistant (727971) for gloria</td>
+      <td>75 pieces</td>
+      <td class="mono">20</td>
+      <td><span class="pill pill-nchem">Non-Chemical</span></td>
+      <td class="mono">20</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">5 pieces/Month</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780472105988_qttva1hats&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">5</td>
+      <td class="mono">03/06/2026</td>
+      <td>PES Professional | Excellent | Service | SA</td>
+      <td>Judokill   ( VLL0001001H )</td>
+      <td>160 Litres</td>
+      <td class="mono">20</td>
+      <td><span class="pill pill-chem">Chemical</span></td>
+      <td class="mono">20</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">20 Litres/Month</span><br><span style="color:var(--muted);font-size:10px">as at 03/06/2026</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780485562685_mfbp4n0bmb&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">6</td>
+      <td class="mono">03/06/2026</td>
+      <td>PES Professional | Excellent | Service | SA</td>
+      <td>Alphathrin</td>
+      <td>160 Litres</td>
+      <td class="mono">20</td>
+      <td><span class="pill pill-chem">Chemical</span></td>
+      <td class="mono">20</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">21 Litres/Month</span><br><span style="color:var(--muted);font-size:10px">as at 03/06/2026</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780486065703_y3jfapey64&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">7</td>
+      <td class="mono">03/06/2026</td>
+      <td>PES Professional | Excellent | Service | SA</td>
+      <td>Super suspend SC</td>
+      <td>180 Litres</td>
+      <td class="mono">0</td>
+      <td><span class="pill pill-chem">Chemical</span></td>
+      <td class="mono">0</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">15 Litres/Month</span><br><span style="color:var(--muted);font-size:10px">as at 03/06/2026</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780486238352_u88z8pvrfll&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">8</td>
+      <td class="mono">03/06/2026</td>
+      <td>PES Professional | Excellent | Service | SA</td>
+      <td>Deltanex 15EC</td>
+      <td>180 Kg</td>
+      <td class="mono">3360</td>
+      <td><span class="pill pill-chem">Chemical</span></td>
+      <td class="mono">0</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">26 Kg/Month</span><br><span style="color:var(--muted);font-size:10px">as at 03/06/2026</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780486450421_fyfgy9dxkw&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">9</td>
+      <td class="mono">03/06/2026</td>
+      <td>PES Professional | Excellent | Service | SA</td>
+      <td>Red top fly trap</td>
+      <td>2000 pieces</td>
+      <td class="mono">0</td>
+      <td><span class="pill pill-nchem">Non-Chemical</span></td>
+      <td class="mono">200</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">250 pieces/Month</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780486894050_qa2196640dg&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">10</td>
+      <td class="mono">03/06/2026</td>
+      <td>PES Professional | Excellent | Service | SA</td>
+      <td>Cockroach Glue board</td>
+      <td>6000 pieces</td>
+      <td class="mono">0</td>
+      <td><span class="pill pill-nchem">Non-Chemical</span></td>
+      <td class="mono">1165</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">350 pieces/Month</span><br><span style="color:var(--muted);font-size:10px">as at 03/06/2026</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780487219137_a0d6w4k3vkc&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">11</td>
+      <td class="mono">03/06/2026</td>
+      <td>PES Professional | Excellent | Service | SA</td>
+      <td>Bellows Duster</td>
+      <td>50 pieces</td>
+      <td class="mono">0</td>
+      <td><span class="pill pill-nchem">Non-Chemical</span></td>
+      <td class="mono">5</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">8 pieces/Month</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780487346185_1ptmw32d944i&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">12</td>
+      <td class="mono">03/06/2026</td>
+      <td>PES Professional | Excellent | Service | SA</td>
+      <td>K-Obiol EC25</td>
+      <td>200 Litres</td>
+      <td class="mono">172</td>
+      <td><span class="pill pill-chem">Chemical</span></td>
+      <td class="mono">175</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">40 Litres/Month</span><br><span style="color:var(--muted);font-size:10px">as at 03/06/2026</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780487572969_0fymovqx3qn&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">13</td>
+      <td class="mono">03/06/2026</td>
+      <td>Russel IPM | UK</td>
+      <td>Moth funnel trap ( complete )</td>
+      <td>100 pieces</td>
+      <td class="mono">0</td>
+      <td><span class="pill pill-nchem">Non-Chemical</span></td>
+      <td class="mono">10</td>
+      <td style="font-size:12px;white-space:nowrap">—</td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780487744520_962bm2u99pp&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">14</td>
+      <td class="mono">03/06/2026</td>
+      <td>Russel IPM | UK</td>
+      <td>X-lure cartridge    ( CAT-XLURE-MSTREFILL)</td>
+      <td>1500 pieces</td>
+      <td class="mono">92</td>
+      <td><span class="pill pill-nchem">Non-Chemical</span></td>
+      <td class="mono">100</td>
+      <td style="font-size:12px;white-space:nowrap">—</td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780487802580_u0oxrczz5eq&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">15</td>
+      <td class="mono">03/06/2026</td>
+      <td>Russel IPM | UK</td>
+      <td>Yellow Moth Walls ( CAT-MW-50 )</td>
+      <td>1500 pieces</td>
+      <td class="mono">0</td>
+      <td><span class="pill pill-nchem">Non-Chemical</span></td>
+      <td class="mono">0</td>
+      <td style="font-size:12px;white-space:nowrap">—</td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780488090009_jl4vvf6gtl&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">16</td>
+      <td class="mono">03/06/2026</td>
+      <td>Degesh SA</td>
+      <td>Milfog</td>
+      <td>400 Litres</td>
+      <td class="mono">140</td>
+      <td><span class="pill pill-chem">Chemical</span></td>
+      <td class="mono">150</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">60 Litres/Month</span><br><span style="color:var(--muted);font-size:10px">as at 03/06/2026</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780488301588_wdbrojk3u7&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">17</td>
+      <td class="mono">03/06/2026</td>
+      <td>Degesh SA</td>
+      <td>Tabaskerm</td>
+      <td>200 Litres</td>
+      <td class="mono">130</td>
+      <td><span class="pill pill-chem">Chemical</span></td>
+      <td class="mono">150</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">40 Litres/Month</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780488507656_k5g4aqqunvf&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">18</td>
+      <td class="mono">03/06/2026</td>
+      <td>Edialux France SAS | FR</td>
+      <td>DK Extreme CS</td>
+      <td>120 Litres</td>
+      <td class="mono">0</td>
+      <td><span class="pill pill-chem">Chemical</span></td>
+      <td class="mono">25</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">16 Litres/Month</span><br><span style="color:var(--muted);font-size:10px">as at 03/06/2026</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780488592279_ibb5t1o5hi&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">19</td>
+      <td class="mono">03/06/2026</td>
+      <td>Rentokil Initial UK</td>
+      <td>Bromatrol concentrate</td>
+      <td>300 Litres</td>
+      <td class="mono">50</td>
+      <td><span class="pill pill-chem">Chemical</span></td>
+      <td class="mono">60</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">40 Litres/Month</span><br><span style="color:var(--muted);font-size:10px">as at 03/06/2026</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780488658059_3czzfn72q1h&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">20</td>
+      <td class="mono">03/06/2026</td>
+      <td>PES Professional | Excellent | Service | SA</td>
+      <td>Combat bait station</td>
+      <td>200 pieces</td>
+      <td class="mono">0</td>
+      <td><span class="pill pill-nchem">Non-Chemical</span></td>
+      <td class="mono">50</td>
+      <td style="font-size:12px;white-space:nowrap">—</td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780488712855_kotjxeiyu6&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">21</td>
+      <td class="mono">03/06/2026</td>
+      <td>Rentokil Initial UK</td>
+      <td>Cockroach Bait Station</td>
+      <td>1200 pieces</td>
+      <td class="mono">439</td>
+      <td><span class="pill pill-nchem">Non-Chemical</span></td>
+      <td class="mono">500</td>
+      <td style="font-size:12px;white-space:nowrap"><span class="mono">150 pieces/Month</span></td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780488839070_ihx2831jf1&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">22</td>
+      <td class="mono">03/06/2026</td>
+      <td>Bird X | UK</td>
+      <td>Prohogring staples  (NET012 1107001101 Stainless Steel, 2500 box)</td>
+      <td>10000 pieces</td>
+      <td class="mono">0</td>
+      <td><span class="pill pill-nchem">Non-Chemical</span></td>
+      <td class="mono">0</td>
+      <td style="font-size:12px;white-space:nowrap">—</td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780488936800_e5zcqvhgd6l&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">23</td>
+      <td class="mono">03/06/2026</td>
+      <td>Bird X | UK</td>
+      <td>Prohogring stapler  ( HOGRINGER 1107000658 )</td>
+      <td>10 pieces</td>
+      <td class="mono">0</td>
+      <td><span class="pill pill-nchem">Non-Chemical</span></td>
+      <td class="mono">0</td>
+      <td style="font-size:12px;white-space:nowrap">—</td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780488974679_65j6qa1h4q7&#39;)" title="Delete">🗑</button></td>
+    </tr><tr>
+      <td class="mono">24</td>
+      <td class="mono">03/06/2026</td>
+      <td>Bird X | UK</td>
+      <td>Net repair twine black  ( NET070 1107001213 150m)</td>
+      <td>450 MT</td>
+      <td class="mono">0</td>
+      <td><span class="pill pill-nchem">Non-Chemical</span></td>
+      <td class="mono">0</td>
+      <td style="font-size:12px;white-space:nowrap">—</td>
+      <td style="font-size:12px">Joseph HOW</td>
+      <td><span class="pill pill-green">Approved</span></td>
+      <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;padding:10px 12px"><button class="btn btn-danger btn-sm" onclick="deletePO(&#39;1780489014229_w3b8tvajo5&#39;)" title="Delete">🗑</button></td>
+    </tr></tbody>
         </table>
       </div>
     </div>
 
     <!-- DASHBOARD -->
-    <div id="page-dashboard" style="display:none">
+    <div id="page-dashboard" style="display: none;">
       <div class="section-header">
         <h2 style="font-size:18px;font-weight:700;color:var(--white)">Dashboard</h2>
         <div style="display:flex;gap:10px">
@@ -385,14 +697,14 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
       <div id="order-form-wrap" class="card collapsible">
         <div class="card-title">New Order</div>
         <div class="form-grid">
-          <div class="form-field"><label>Order Date</label><input type="date" id="ord-date"/></div>
+          <div class="form-field"><label>Order Date</label><input type="date" id="ord-date"></div>
           <div class="form-field"><label>Supplier Name</label>
-            <select id="ord-supplier" onchange="handleSupplierSelect('ord-supplier','ord-supplier-other')"></select>
-            <input type="text" id="ord-supplier-other" placeholder="Enter supplier name..." style="display:none;margin-top:6px;width:100%;padding:9px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none"/>
+            <select id="ord-supplier" onchange="handleSupplierSelect(&#39;ord-supplier&#39;,&#39;ord-supplier-other&#39;)"></select>
+            <input type="text" id="ord-supplier-other" placeholder="Enter supplier name..." style="display:none;margin-top:6px;width:100%;padding:9px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:&#39;DM Sans&#39;,sans-serif;font-size:13px;outline:none">
           </div>
-          <div class="form-field"><label>Country</label><input type="text" id="ord-country"/></div>
-          <div class="form-field"><label>Quantity</label><input type="number" id="ord-qty"/></div>
-          <div class="form-field"><label>Product Name</label><input type="text" id="ord-product"/></div>
+          <div class="form-field"><label>Country</label><input type="text" id="ord-country"></div>
+          <div class="form-field"><label>Quantity</label><input type="number" id="ord-qty"></div>
+          <div class="form-field"><label>Product Name</label><input type="text" id="ord-product"></div>
           <div class="form-field"><label>Shipping Method</label>
             <select id="ord-shipping"><option value="Sea">Sea</option><option value="Air">Air</option></select>
           </div>
@@ -402,29 +714,29 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
           <div class="form-field"><label>Business Unit</label>
             <select id="ord-bu"><option value="">— Select BU —</option><option value="Pest Control">Pest Control</option><option value="Hygiene">Hygiene</option><option value="Speciality Business">Speciality Business</option></select>
           </div>
-          <div class="form-field"><label>Ship Name / Flight No.</label><input type="text" id="ord-vessel"/></div>
-          <div class="form-field"><label>ETA</label><input type="date" id="ord-eta"/></div>
-          <div class="form-field"><label>Available in Store</label><input type="date" id="ord-instore"/></div>
+          <div class="form-field"><label>Ship Name / Flight No.</label><input type="text" id="ord-vessel"></div>
+          <div class="form-field"><label>ETA</label><input type="date" id="ord-eta"></div>
+          <div class="form-field"><label>Available in Store</label><input type="date" id="ord-instore"></div>
         </div>
         <div class="form-grid form-grid-2" style="max-width:400px">
           <div class="form-field">
             <label>In Production</label>
             <div class="toggle-wrap" style="padding-top:6px">
-              <label class="toggle"><input type="checkbox" id="ord-prod"/><span class="slider"></span></label>
+              <label class="toggle"><input type="checkbox" id="ord-prod"><span class="slider"></span></label>
               <span id="ord-prod-lbl" style="font-size:13px;color:var(--muted)">No</span>
             </div>
           </div>
           <div class="form-field">
             <label>Available Ex-Works</label>
             <div class="toggle-wrap" style="padding-top:6px">
-              <label class="toggle"><input type="checkbox" id="ord-exw"/><span class="slider"></span></label>
+              <label class="toggle"><input type="checkbox" id="ord-exw"><span class="slider"></span></label>
               <span id="ord-exw-lbl" style="font-size:13px;color:var(--muted)">No</span>
             </div>
           </div>
           <div class="form-field">
             <label>Product Shipped</label>
             <div class="toggle-wrap" style="padding-top:6px">
-              <label class="toggle"><input type="checkbox" id="ord-shipped"/><span class="slider"></span></label>
+              <label class="toggle"><input type="checkbox" id="ord-shipped"><span class="slider"></span></label>
               <span id="ord-shipped-lbl" style="font-size:13px;color:var(--muted)">No</span>
             </div>
           </div>
@@ -441,8 +753,8 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 
       <!-- Filter Bar -->
       <div class="filter-bar">
-        <input type="text" id="dash-search" placeholder="Search product or supplier..." oninput="renderDashboard()" style="min-width:200px"/>
-        <select id="dash-country" onchange="renderDashboard()"><option value="">All Countries</option></select>
+        <input type="text" id="dash-search" placeholder="Search product or supplier..." oninput="renderDashboard()" style="min-width:200px">
+        <select id="dash-country" onchange="renderDashboard()"><option value="">All Countries</option><option value="Germany">Germany</option><option value="SA">SA</option><option value="UK">UK</option></select>
         <select id="dash-shipping" onchange="renderDashboard()">
           <option value="">All Shipping</option><option value="Sea">Sea</option><option value="Air">Air</option>
         </select>
@@ -468,7 +780,30 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
               <th>Days</th><th>Comments</th><th>Actions</th>
             </tr>
           </thead>
-          <tbody id="dash-tbody"></tbody>
+          <tbody id="dash-tbody"><tr>
+      <td class="mono">1</td>
+      <td class="mono">03/06/2026</td>
+      <td>PES Professional | Excellent | Service | SA</td>
+      <td>SA</td>
+      <td>Deltanex 15EC</td>
+      <td class="mono">180</td>
+      <td>
+        <span class="pill pill-sea">Sea</span><br>
+        <span class="pill pill-chem" style="margin-top:4px">Chemical</span>
+        
+      </td>
+      <td><span class="pill pill-pc" style="font-size:10px">Pest Control</span></td>
+      <td><div class="status-checks">
+      <label><input type="checkbox" onchange="toggleStatus(&#39;1780487880700_gelugx00cp&#39;,&#39;prod&#39;,this.checked)"> Production</label>
+      <label><input type="checkbox" onchange="toggleStatus(&#39;1780487880700_gelugx00cp&#39;,&#39;exw&#39;,this.checked)"> Ex-Works</label>
+      <label><input type="checkbox" onchange="toggleStatus(&#39;1780487880700_gelugx00cp&#39;,&#39;shipped&#39;,this.checked)"> Shipped</label>
+    </div></td>
+      <td class="mono">—</td>
+      <td class="mono">—</td>
+      <td>—</td>
+      <td style="max-width:180px"><span style="font-family:&#39;DM Mono&#39;,monospace;font-size:11px;color:var(--text2);cursor:pointer;text-decoration:underline dotted" onclick="openCommentModal(&#39;1780487880700_gelugx00cp&#39;)">—</span></td>
+      <td><div style="display:flex;gap:6px"><button class="btn btn-navy btn-sm" onclick="openEditModal(&#39;1780487880700_gelugx00cp&#39;)">Edit</button><button class="btn btn-danger btn-sm" onclick="deleteOrder(&#39;1780487880700_gelugx00cp&#39;)">🗑</button></div></td>
+    </tr></tbody>
         </table>
       </div>
     </div>
@@ -568,7 +903,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
     </div>
 
     <!-- SETTINGS -->
-    <div id="page-settings" style="display:none">
+    <div id="page-settings" style="display: none;">
       <div class="section-header">
         <h2 style="font-size:18px;font-weight:700;color:var(--white)">⚙ Settings</h2>
       </div>
@@ -578,11 +913,27 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
           <div class="card-title">User Management</div>
           <div class="settings-table-wrap" style="margin-bottom:16px"><table class="settings-table">
             <thead><tr><th>Username</th><th>Role</th><th></th></tr></thead>
-            <tbody id="users-tbody"></tbody>
+            <tbody id="users-tbody"><tr>
+    <td>user</td>
+    <td><span class="role-pill user">User</span></td>
+    <td><span style="color:var(--muted);font-size:11px">Protected</span></td>
+  </tr><tr>
+    <td>admin</td>
+    <td><span class="role-pill superuser">Superuser</span></td>
+    <td><span style="color:var(--muted);font-size:11px">Protected</span></td>
+  </tr><tr>
+    <td>sysadmin</td>
+    <td><span class="role-pill admin">Admin</span></td>
+    <td><span style="color:var(--muted);font-size:11px">Protected</span></td>
+  </tr><tr>
+    <td>manager</td>
+    <td><span class="role-pill manager">Manager</span></td>
+    <td><span style="color:var(--muted);font-size:11px">Protected</span></td>
+  </tr></tbody>
           </table></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-            <input type="text" id="new-user-name" placeholder="Username" style="padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none"/>
-            <input type="password" id="new-user-pass" placeholder="Password" style="padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none"/>
+            <input type="text" id="new-user-name" placeholder="Username" style="padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none">
+            <input type="password" id="new-user-pass" placeholder="Password" style="padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none">
           </div>
           <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
             <select id="new-user-role" style="padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none">
@@ -595,27 +946,27 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
         <!-- Manager Names -->
         <div class="card card-sticky">
           <div class="card-title">Manager Names</div>
-          <div class="chip-list" id="managers-chips"></div>
+          <div class="chip-list" id="managers-chips"><span class="chip">Sebastien HARDY<span class="chip-remove" onclick="removeManager(0)">×</span></span><span class="chip">Joseph HOW<span class="chip-remove" onclick="removeManager(1)">×</span></span><span class="chip">Olivier DESVAUX<span class="chip-remove" onclick="removeManager(2)">×</span></span><span class="chip">Laurent Maurel<span class="chip-remove" onclick="removeManager(3)">×</span></span><span class="chip">Roger DUPONT<span class="chip-remove" onclick="removeManager(4)">×</span></span></div>
           <div style="display:flex;gap:8px;margin-top:8px">
-            <input type="text" id="new-manager" placeholder="Manager name..." style="flex:1;padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none"/>
+            <input type="text" id="new-manager" placeholder="Manager name..." style="flex:1;padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none">
             <button class="btn btn-gold btn-sm" onclick="addManager()">Add</button>
           </div>
         </div>
         <!-- Quantity Units -->
         <div class="card card-sticky">
           <div class="card-title">Quantity Units</div>
-          <div class="chip-list" id="units-chips"></div>
+          <div class="chip-list" id="units-chips"><span class="chip">Kg<span class="chip-remove" onclick="removeUnit(0)">×</span></span><span class="chip">MT<span class="chip-remove" onclick="removeUnit(1)">×</span></span><span class="chip">Litres<span class="chip-remove" onclick="removeUnit(2)">×</span></span><span class="chip">Drums<span class="chip-remove" onclick="removeUnit(3)">×</span></span><span class="chip">Boxes<span class="chip-remove" onclick="removeUnit(4)">×</span></span><span class="chip">Bags<span class="chip-remove" onclick="removeUnit(5)">×</span></span><span class="chip">pieces<span class="chip-remove" onclick="removeUnit(6)">×</span></span></div>
           <div style="display:flex;gap:8px;margin-top:8px">
-            <input type="text" id="new-unit" placeholder="Unit label (e.g. MT)..." style="flex:1;padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none"/>
+            <input type="text" id="new-unit" placeholder="Unit label (e.g. MT)..." style="flex:1;padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none">
             <button class="btn btn-gold btn-sm" onclick="addUnit()">Add</button>
           </div>
         </div>
         <!-- Suppliers -->
         <div class="card card-sticky">
           <div class="card-title">Suppliers</div>
-          <div class="chip-list" id="suppliers-chips"></div>
+          <div class="chip-list" id="suppliers-chips"><span class="chip">Rentokil Initial UK<span class="chip-remove" onclick="removeSupplier(0)">×</span></span><span class="chip">Gloria Garten DE<span class="chip-remove" onclick="removeSupplier(1)">×</span></span><span class="chip">PES Professional | Excellent | Service | SA<span class="chip-remove" onclick="removeSupplier(2)">×</span></span><span class="chip">Henchem | SA<span class="chip-remove" onclick="removeSupplier(3)">×</span></span><span class="chip">Epest supply | US<span class="chip-remove" onclick="removeSupplier(4)">×</span></span><span class="chip">Laboratoire ACL | FR<span class="chip-remove" onclick="removeSupplier(5)">×</span></span><span class="chip">Plastdiversity | Portugal<span class="chip-remove" onclick="removeSupplier(6)">×</span></span><span class="chip">DALIAN GOLDEN | CN<span class="chip-remove" onclick="removeSupplier(7)">×</span></span><span class="chip">Coopers Environment | SA<span class="chip-remove" onclick="removeSupplier(8)">×</span></span><span class="chip">Heatwork Industrial Heating Solutions | Sweden<span class="chip-remove" onclick="removeSupplier(9)">×</span></span><span class="chip">Dongguan Shouxin Hardware Products Co.,Ltd | CN<span class="chip-remove" onclick="removeSupplier(10)">×</span></span><span class="chip">Russel IPM | UK<span class="chip-remove" onclick="removeSupplier(11)">×</span></span><span class="chip">Hortibel France | FR<span class="chip-remove" onclick="removeSupplier(12)">×</span></span><span class="chip">Tagros Chemicals India Limited | IND<span class="chip-remove" onclick="removeSupplier(13)">×</span></span><span class="chip">Hiten Techno Products Corporation | IND<span class="chip-remove" onclick="removeSupplier(14)">×</span></span><span class="chip">Rentokil Initial Belgium | BEL<span class="chip-remove" onclick="removeSupplier(15)">×</span></span><span class="chip">Eagle Eye Bird Control | UK<span class="chip-remove" onclick="removeSupplier(16)">×</span></span><span class="chip">Yangzhou Biochemical | CN<span class="chip-remove" onclick="removeSupplier(17)">×</span></span><span class="chip">In2Care Trading | NE<span class="chip-remove" onclick="removeSupplier(18)">×</span></span><span class="chip">Pelsis | UK<span class="chip-remove" onclick="removeSupplier(19)">×</span></span><span class="chip">Bird X | UK<span class="chip-remove" onclick="removeSupplier(20)">×</span></span><span class="chip">Leadyes Tech Co Ltd | TW<span class="chip-remove" onclick="removeSupplier(21)">×</span></span><span class="chip">Edialux France SAS | FR<span class="chip-remove" onclick="removeSupplier(22)">×</span></span><span class="chip">MABI FRANCE<span class="chip-remove" onclick="removeSupplier(23)">×</span></span><span class="chip">Synvita | SA<span class="chip-remove" onclick="removeSupplier(24)">×</span></span><span class="chip">Degesh SA<span class="chip-remove" onclick="removeSupplier(25)">×</span></span><span class="chip">Degesh GE<span class="chip-remove" onclick="removeSupplier(26)">×</span></span></div>
           <div style="display:flex;gap:8px;margin-top:8px">
-            <input type="text" id="new-supplier" placeholder="Supplier name..." style="flex:1;padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none"/>
+            <input type="text" id="new-supplier" placeholder="Supplier name..." style="flex:1;padding:8px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none">
             <button class="btn btn-gold btn-sm" onclick="addSupplier()">Add</button>
           </div>
         </div>
@@ -631,11 +982,50 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
     <p style="color:var(--text2);font-size:13px;margin-bottom:16px" id="approve-modal-info"></p>
     <div class="form-field" style="margin-bottom:20px">
       <label>Confirm / Adjust Quantity</label>
-      <input type="number" id="approve-qty"/>
+      <input type="number" id="approve-qty">
     </div>
     <div style="display:flex;gap:10px">
       <button class="btn btn-gold" onclick="confirmApprove()">Confirm Approval</button>
       <button class="btn btn-navy" onclick="closeApproveModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Edit Purchase Request -->
+<div class="modal-overlay" id="edit-po-modal">
+  <div class="modal" style="max-width:680px">
+    <h3>Edit Purchase Request</h3>
+    <div class="form-grid">
+      <div class="form-field"><label>Request Date</label><input type="date" id="epo-date"></div>
+      <div class="form-field"><label>Supplier Name</label>
+        <select id="epo-supplier" onchange="handleSupplierSelect('epo-supplier','epo-supplier-other')"></select>
+        <input type="text" id="epo-supplier-other" placeholder="Enter supplier name..." style="display:none;margin-top:6px;width:100%;padding:9px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none">
+      </div>
+      <div class="form-field"><label>Product Name</label><input type="text" id="epo-product"></div>
+      <div class="form-field"><label>Quantity</label><input type="number" id="epo-qty"></div>
+      <div class="form-field"><label>Units</label><select id="epo-units"></select></div>
+      <div class="form-field"><label>Current Stock</label><input type="number" id="epo-stock"></div>
+      <div class="form-field"><label>Product Type</label>
+        <select id="epo-type"><option value="Chemical">Chemical</option><option value="Non-Chemical">Non-Chemical</option></select>
+      </div>
+      <div class="form-field"><label>Reorder Level</label><input type="number" id="epo-reorder"></div>
+      <div class="form-field"><label>Consumption Rate</label><input type="number" id="epo-cons-rate" placeholder="e.g. 200"></div>
+      <div class="form-field"><label>Rate Period</label>
+        <select id="epo-cons-period">
+          <option value="Day">per Day</option>
+          <option value="Week">per Week</option>
+          <option value="Month">per Month</option>
+        </select>
+      </div>
+      <div class="form-field"><label>As At Date</label><input type="date" id="epo-cons-date"></div>
+    </div>
+    <div class="form-field" style="margin-bottom:14px">
+      <label>Approved By (select manager/s)</label>
+      <div class="chk-list" id="epo-managers-list"></div>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-gold" onclick="saveEditPO()">Save Changes</button>
+      <button class="btn btn-navy" onclick="closeEditPOModal()">Cancel</button>
     </div>
   </div>
 </div>
@@ -645,14 +1035,14 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
   <div class="modal" style="max-width:680px">
     <h3>Edit Order</h3>
     <div class="form-grid">
-      <div class="form-field"><label>Order Date</label><input type="date" id="edit-date"/></div>
+      <div class="form-field"><label>Order Date</label><input type="date" id="edit-date"></div>
       <div class="form-field"><label>Supplier</label>
-        <select id="edit-supplier" onchange="handleSupplierSelect('edit-supplier','edit-supplier-other')"></select>
-        <input type="text" id="edit-supplier-other" placeholder="Enter supplier name..." style="display:none;margin-top:6px;width:100%;padding:9px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none"/>
+        <select id="edit-supplier" onchange="handleSupplierSelect(&#39;edit-supplier&#39;,&#39;edit-supplier-other&#39;)"><option value="">— Select supplier —</option><option value="Rentokil Initial UK">Rentokil Initial UK</option><option value="Gloria Garten DE">Gloria Garten DE</option><option value="PES Professional | Excellent | Service | SA">PES Professional | Excellent | Service | SA</option><option value="Henchem | SA">Henchem | SA</option><option value="Epest supply | US">Epest supply | US</option><option value="Laboratoire ACL | FR">Laboratoire ACL | FR</option><option value="Plastdiversity | Portugal">Plastdiversity | Portugal</option><option value="DALIAN GOLDEN | CN">DALIAN GOLDEN | CN</option><option value="Coopers Environment | SA">Coopers Environment | SA</option><option value="Heatwork Industrial Heating Solutions | Sweden">Heatwork Industrial Heating Solutions | Sweden</option><option value="Dongguan Shouxin Hardware Products Co.,Ltd | CN">Dongguan Shouxin Hardware Products Co.,Ltd | CN</option><option value="Russel IPM | UK">Russel IPM | UK</option><option value="Hortibel France | FR">Hortibel France | FR</option><option value="Tagros Chemicals India Limited | IND">Tagros Chemicals India Limited | IND</option><option value="Hiten Techno Products Corporation | IND">Hiten Techno Products Corporation | IND</option><option value="Rentokil Initial Belgium | BEL">Rentokil Initial Belgium | BEL</option><option value="Eagle Eye Bird Control | UK">Eagle Eye Bird Control | UK</option><option value="Yangzhou Biochemical | CN">Yangzhou Biochemical | CN</option><option value="In2Care Trading | NE">In2Care Trading | NE</option><option value="Pelsis | UK">Pelsis | UK</option><option value="Bird X | UK">Bird X | UK</option><option value="Leadyes Tech Co Ltd | TW">Leadyes Tech Co Ltd | TW</option><option value="Edialux France SAS | FR">Edialux France SAS | FR</option><option value="MABI FRANCE">MABI FRANCE</option><option value="Synvita | SA">Synvita | SA</option><option value="Degesh SA">Degesh SA</option><option value="Degesh GE">Degesh GE</option><option value="__other__">+ Other (type manually)</option></select>
+        <input type="text" id="edit-supplier-other" placeholder="Enter supplier name..." style="display:none;margin-top:6px;width:100%;padding:9px 12px;background:var(--navy);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:&#39;DM Sans&#39;,sans-serif;font-size:13px;outline:none">
       </div>
-      <div class="form-field"><label>Country</label><input type="text" id="edit-country"/></div>
-      <div class="form-field"><label>Quantity</label><input type="number" id="edit-qty"/></div>
-      <div class="form-field"><label>Product</label><input type="text" id="edit-product"/></div>
+      <div class="form-field"><label>Country</label><input type="text" id="edit-country"></div>
+      <div class="form-field"><label>Quantity</label><input type="number" id="edit-qty"></div>
+      <div class="form-field"><label>Product</label><input type="text" id="edit-product"></div>
       <div class="form-field"><label>Shipping</label>
         <select id="edit-shipping"><option value="Sea">Sea</option><option value="Air">Air</option></select>
       </div>
@@ -662,29 +1052,29 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
       <div class="form-field"><label>Business Unit</label>
         <select id="edit-bu"><option value="">— Select BU —</option><option value="Pest Control">Pest Control</option><option value="Hygiene">Hygiene</option><option value="Speciality Business">Speciality Business</option></select>
       </div>
-      <div class="form-field"><label>Vessel / Flight No.</label><input type="text" id="edit-vessel"/></div>
-      <div class="form-field"><label>ETA</label><input type="date" id="edit-eta"/></div>
-      <div class="form-field"><label>In Store Date</label><input type="date" id="edit-instore"/></div>
+      <div class="form-field"><label>Vessel / Flight No.</label><input type="text" id="edit-vessel"></div>
+      <div class="form-field"><label>ETA</label><input type="date" id="edit-eta"></div>
+      <div class="form-field"><label>In Store Date</label><input type="date" id="edit-instore"></div>
     </div>
     <div class="form-grid form-grid-2" style="max-width:360px;margin-bottom:16px">
       <div class="form-field">
         <label>In Production</label>
         <div class="toggle-wrap" style="padding-top:6px">
-          <label class="toggle"><input type="checkbox" id="edit-prod"/><span class="slider"></span></label>
+          <label class="toggle"><input type="checkbox" id="edit-prod"><span class="slider"></span></label>
           <span id="edit-prod-lbl" style="font-size:13px;color:var(--muted)">No</span>
         </div>
       </div>
       <div class="form-field">
         <label>Ex-Works</label>
         <div class="toggle-wrap" style="padding-top:6px">
-          <label class="toggle"><input type="checkbox" id="edit-exw"/><span class="slider"></span></label>
+          <label class="toggle"><input type="checkbox" id="edit-exw"><span class="slider"></span></label>
           <span id="edit-exw-lbl" style="font-size:13px;color:var(--muted)">No</span>
         </div>
       </div>
       <div class="form-field">
         <label>Shipped</label>
         <div class="toggle-wrap" style="padding-top:6px">
-          <label class="toggle"><input type="checkbox" id="edit-shipped"/><span class="slider"></span></label>
+          <label class="toggle"><input type="checkbox" id="edit-shipped"><span class="slider"></span></label>
           <span id="edit-shipped-lbl" style="font-size:13px;color:var(--muted)">No</span>
         </div>
       </div>
@@ -702,7 +1092,7 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
     <h3>Comment Log</h3>
     <div id="comment-log" style="max-height:280px;overflow-y:auto;margin-bottom:8px"></div>
     <div id="comment-add-row" class="comment-add" style="display:none">
-      <input type="text" id="comment-input" placeholder="Add a comment..." onkeydown="if(event.key==='Enter')addComment()"/>
+      <input type="text" id="comment-input" placeholder="Add a comment..." onkeydown="if(event.key===&#39;Enter&#39;)addComment()">
       <button class="btn btn-gold btn-sm" onclick="addComment()">+ Add</button>
     </div>
     <div style="margin-top:16px;display:flex;justify-content:flex-end">
@@ -1090,18 +1480,21 @@ async function renderPO(){
       ?`${r.approvedQty} ${r.unit} <span class="badge-warn" title="Original qty: ${r.qty} ${r.unit}">⚠ orig: ${r.qty}</span>`
       :`${r.qty} ${r.unit}`;
 
+    const editBtn=`<button class="btn btn-navy btn-sm" onclick="openEditPOModal('${r.id}')" title="Edit">✏</button>`;
     let actions='';
     if(currentUser.role==='manager'){
       if(r.status==='Pending'){
         actions=`<button class="btn btn-sm" style="background:rgba(40,167,69,.15);color:#28a745;border:1px solid rgba(40,167,69,.3)" onclick="openApproveModal('${r.id}')">Approve</button>
           <button class="btn btn-danger btn-sm" onclick="rejectPO('${r.id}')">Reject</button>
+          ${editBtn}
           <button class="btn btn-danger btn-sm" onclick="deletePO('${r.id}')" title="Delete">🗑</button>`;
       } else {
         actions=`<span style="color:var(--muted);font-size:12px">Decided</span>
+          ${editBtn}
           <button class="btn btn-danger btn-sm" onclick="deletePO('${r.id}')" title="Delete">🗑</button>`;
       }
     } else {
-      actions=`<button class="btn btn-danger btn-sm" onclick="deletePO('${r.id}')" title="Delete">🗑</button>`;
+      actions=`${editBtn}<button class="btn btn-danger btn-sm" onclick="deletePO('${r.id}')" title="Delete">🗑</button>`;
     }
 
     return `<tr>
@@ -1163,6 +1556,63 @@ async function rejectPO(id){
 async function deletePO(id){
   if(!confirm2('Delete this request? This is permanent.'))return;
   await DB.deleteRequest(id);await renderPO();toast('Request deleted');
+}
+
+let editingPOId=null;
+async function openEditPOModal(id){
+  const reqs=await DB.getRequests();
+  const r=reqs.find(x=>x.id===id);
+  if(!r)return;
+  editingPOId=id;
+  document.getElementById('epo-date').value=r.date||'';
+  await populateSupplierDropdown('epo-supplier');
+  const sel=document.getElementById('epo-supplier');
+  const otherInput=document.getElementById('epo-supplier-other');
+  const known=[...sel.options].some(o=>o.value===r.supplier&&o.value!=='__other__'&&o.value!=='');
+  if(known){sel.value=r.supplier;otherInput.style.display='none';}
+  else if(r.supplier){sel.value='__other__';otherInput.style.display='block';otherInput.value=r.supplier;}
+  else{sel.value='';otherInput.style.display='none';}
+  document.getElementById('epo-product').value=r.product||'';
+  document.getElementById('epo-qty').value=r.qty||'';
+  const units=await DB.getUnits();
+  const unitSel=document.getElementById('epo-units');
+  unitSel.innerHTML=units.map(u=>`<option value="${u}">${u}</option>`).join('');
+  unitSel.value=r.unit||'';
+  document.getElementById('epo-stock').value=r.stock??'';
+  document.getElementById('epo-type').value=r.type||'Chemical';
+  document.getElementById('epo-reorder').value=r.reorder??'';
+  document.getElementById('epo-cons-rate').value=r.consRate??'';
+  document.getElementById('epo-cons-period').value=r.consPeriod||'Month';
+  document.getElementById('epo-cons-date').value=r.consAsAt||'';
+  const mgrs=await DB.getManagers();
+  const list=document.getElementById('epo-managers-list');
+  list.innerHTML=mgrs.map(m=>`<label class="chk-item"><input type="checkbox" value="${m}"/> ${m}</label>`).join('');
+  const approved=(r.approvedBy||'').split(',').map(s=>s.trim()).filter(Boolean);
+  list.querySelectorAll('input').forEach(cb=>{cb.checked=approved.includes(cb.value);});
+  document.getElementById('edit-po-modal').classList.add('show');
+}
+function closeEditPOModal(){document.getElementById('edit-po-modal').classList.remove('show');editingPOId=null;}
+async function saveEditPO(){
+  if(!editingPOId)return;
+  const supplier=getSupplierValue('epo-supplier','epo-supplier-other');
+  const product=document.getElementById('epo-product').value.trim();
+  const date=document.getElementById('epo-date').value;
+  if(!date||!supplier||!product){toast('Please fill required fields','error');return;}
+  const checked=[...document.querySelectorAll('#epo-managers-list input:checked')].map(x=>x.value);
+  const consRate=document.getElementById('epo-cons-rate').value;
+  await DB.updateRequest(editingPOId,{
+    date,supplier,product,
+    qty:Number(document.getElementById('epo-qty').value),
+    unit:document.getElementById('epo-units').value,
+    stock:Number(document.getElementById('epo-stock').value),
+    type:document.getElementById('epo-type').value,
+    reorder:Number(document.getElementById('epo-reorder').value),
+    consRate:consRate?Number(consRate):null,
+    consPeriod:document.getElementById('epo-cons-period').value,
+    consAsAt:document.getElementById('epo-cons-date').value,
+    approvedBy:checked.join(', ')
+  });
+  closeEditPOModal();await renderPO();toast('Request updated');
 }
 
 // ══════════════════════════════════════════════════
@@ -1869,10 +2319,21 @@ document.querySelectorAll('.modal-overlay').forEach(overlay=>{
   overlay.addEventListener('click',e=>{
     if(e.target===overlay){
       overlay.classList.remove('show');
-      approvingId=null;editingId=null;commentOrderId=null;
+      approvingId=null;editingId=null;editingPOId=null;commentOrderId=null;
     }
   });
 });
+
+// If the app is already visible on load (saved session state), restore currentUser and render
+(function autoInit(){
+  const app=document.getElementById('app');
+  if(!app||app.style.display==='none')return;
+  const username=document.getElementById('nav-username').textContent.trim()||'sysadmin';
+  const roleEl=document.getElementById('nav-rolepill');
+  const role=(['superuser','admin','manager','user'].find(r=>roleEl.classList.contains(r)))||'admin';
+  currentUser={username,role};
+  renderPO();
+})();
 
 // toggle label sync for edit modal
 ['edit-prod','edit-exw','edit-shipped'].forEach(id=>{
@@ -1882,5 +2343,6 @@ document.querySelectorAll('.modal-overlay').forEach(overlay=>{
   });
 });
 </script>
-</body>
-</html>
+
+
+</body></html>
