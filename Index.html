@@ -37,6 +37,7 @@ body.light-mode{
   --border:#cbd5e0;
   --text:#1a202c;
   --text2:#4a5568;
+  --white:#1a202c;
   --shadow:0 4px 24px rgba(0,0,0,0.10);
 }
 body.light-mode .topbar{background:#ffffff;border-bottom:1px solid #cbd5e0}
@@ -82,6 +83,21 @@ body.light-mode .card-title{color:#1a202c}
 body.light-mode .card-sticky .card-title{background:#ffffff}
 body.light-mode .settings-table-wrap thead th{background:#f0f4f8}
 body.light-mode .section-header h2{color:#1a202c}
+/* light-mode: ensure all text turns dark */
+body.light-mode td{color:#1a202c}
+body.light-mode th{color:#4a5568}
+body.light-mode .mono{color:#1a202c}
+body.light-mode .topbar-brand{color:#1a202c}
+body.light-mode .nav-tab{color:#4a5568}
+body.light-mode .nav-tab.active{color:var(--navy)}
+body.light-mode .user-badge span{color:#1a202c}
+body.light-mode .card-title{color:#1a202c}
+body.light-mode h2,body.light-mode h3{color:#1a202c}
+body.light-mode label{color:#4a5568}
+body.light-mode .form-field label{color:#4a5568}
+body.light-mode .days-green{color:#16a34a}
+body.light-mode .days-amber{color:#b45309}
+body.light-mode .days-red{color:#dc2626}
 /* theme toggle button */
 .theme-toggle{display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--navy3);border:1px solid var(--border);border-radius:20px;cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);transition:all .2s;user-select:none;white-space:nowrap}
 .theme-toggle:hover{color:var(--text);border-color:var(--gold)}
