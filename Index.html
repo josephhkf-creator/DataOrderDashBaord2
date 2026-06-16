@@ -1553,7 +1553,7 @@ async function confirmApprove(){
   // Auto-create dashboard order
   const comments=qtyChanged?[`${todayPrefix()}Quantity adjusted from ${req.qty} to ${newQty} ${req.unit} on approval`]:[];
   await DB.addOrder({
-    date:today(),supplier:req.supplier,country:'',qty:newQty,product:req.product,
+    date:req.date,supplier:req.supplier,country:'',qty:newQty,product:req.product,
     shipping:'Sea',type:req.type,vessel:'',prod:false,exw:false,shipped:false,
     eta:'',instore:'',comments
   });
