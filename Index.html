@@ -44,7 +44,9 @@ body.light-mode .topbar{background:#ffffff;border-bottom:1px solid #cbd5e0}
 body.light-mode .user-badge{background:#f0f4f8;border-color:#cbd5e0}
 body.light-mode .nav-tab:hover{background:rgba(0,0,0,.05);color:#1a202c}
 body.light-mode thead{background:#f0f4f8}
-body.light-mode tr:hover td{background:rgba(0,0,0,.025)}
+body.light-mode tbody tr:nth-child(even) td{background:rgba(0,0,0,.03)}
+body.light-mode tbody tr:nth-child(odd) td{background:transparent}
+body.light-mode tr:hover td{background:rgba(201,168,76,.1)!important}
 body.light-mode .slider{background:#cbd5e0;border-color:#b0bed0}
 body.light-mode .slider:before{background:#64748b}
 body.light-mode .filter-bar input,body.light-mode .filter-bar select{background:#f0f4f8;border-color:#cbd5e0;color:#1a202c}
@@ -182,7 +184,9 @@ thead{background:var(--navy)}
 th{padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;border-bottom:1px solid var(--border)}
 td{padding:10px 12px;border-bottom:1px solid rgba(35,48,69,.6);vertical-align:middle}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:rgba(255,255,255,.025)}
+tbody tr:nth-child(even) td{background:rgba(255,255,255,.035)}
+tbody tr:nth-child(odd) td{background:transparent}
+tr:hover td{background:rgba(201,168,76,.07)!important}
 /* ── STATUS PILLS ── */
 .pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 .pill-amber{background:rgba(255,193,7,.15);color:#ffc107}
@@ -253,6 +257,21 @@ input:checked+.slider:before{transform:translateX(18px);background:var(--navy)}
 .status-checks input[type=checkbox]{accent-color:var(--gold)}
 /* ── SECTION HEADER ── */
 .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+/* ── ARRIVAL SUMMARY BAR ── */
+#arrival-summary{background:var(--navy2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:12px;position:sticky;top:56px;z-index:50;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.arrival-summary-inner{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.arrival-chip{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;background:var(--navy3);border:1px solid var(--border);white-space:nowrap}
+.arrival-chip .chip-label{color:var(--muted);font-size:11px;font-weight:500}
+.arrival-chip .chip-pct{color:var(--gold);font-family:'DM Mono',monospace;font-size:13px;font-weight:700}
+.arrival-chip .chip-bar{width:60px;height:5px;background:var(--navy4);border-radius:3px;overflow:hidden}
+.arrival-chip .chip-bar-fill{height:100%;border-radius:3px;background:var(--gold);transition:width .4s ease}
+.arrival-chip.full .chip-bar-fill{background:var(--green)}
+.arrival-chip.empty .chip-pct{color:var(--muted)}
+.arrival-summary-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-right:4px;white-space:nowrap}
+body.light-mode #arrival-summary{box-shadow:0 2px 8px rgba(0,0,0,.08)}
+body.light-mode .arrival-chip{background:#f0f4f8;border-color:#cbd5e0}
+body.light-mode .arrival-chip .chip-bar{background:#e2e8f0}
+
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
   .main{padding:12px}
@@ -736,6 +755,20 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
         </div>
         <div class="form-grid form-grid-2" style="max-width:400px">
           <div class="form-field">
+            <label>Quoted</label>
+            <div class="toggle-wrap" style="padding-top:6px">
+              <label class="toggle"><input type="checkbox" id="ord-quoted"><span class="slider"></span></label>
+              <span id="ord-quoted-lbl" style="font-size:13px;color:var(--muted)">No</span>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Payment Done</label>
+            <div class="toggle-wrap" style="padding-top:6px">
+              <label class="toggle"><input type="checkbox" id="ord-paid"><span class="slider"></span></label>
+              <span id="ord-paid-lbl" style="font-size:13px;color:var(--muted)">No</span>
+            </div>
+          </div>
+          <div class="form-field">
             <label>In Production</label>
             <div class="toggle-wrap" style="padding-top:6px">
               <label class="toggle"><input type="checkbox" id="ord-prod"><span class="slider"></span></label>
@@ -785,6 +818,10 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
         </select>
         <div class="toggle-hide" id="hide-arrived-btn" onclick="toggleHideArrived()">👁 Hide Arrived</div>
         <button class="btn btn-navy btn-sm" onclick="clearDashFilters()">Clear</button>
+      </div>
+
+      <div id="arrival-summary" style="display:none">
+        <div class="arrival-summary-inner" id="arrival-summary-inner"></div>
       </div>
 
       <div class="tbl-wrap">
@@ -1073,6 +1110,20 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
       <div class="form-field"><label>In Store Date</label><input type="date" id="edit-instore"></div>
     </div>
     <div class="form-grid form-grid-2" style="max-width:360px;margin-bottom:16px">
+      <div class="form-field">
+        <label>Quoted</label>
+        <div class="toggle-wrap" style="padding-top:6px">
+          <label class="toggle"><input type="checkbox" id="edit-quoted"><span class="slider"></span></label>
+          <span id="edit-quoted-lbl" style="font-size:13px;color:var(--muted)">No</span>
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Payment Done</label>
+        <div class="toggle-wrap" style="padding-top:6px">
+          <label class="toggle"><input type="checkbox" id="edit-paid"><span class="slider"></span></label>
+          <span id="edit-paid-lbl" style="font-size:13px;color:var(--muted)">No</span>
+        </div>
+      </div>
       <div class="form-field">
         <label>In Production</label>
         <div class="toggle-wrap" style="padding-top:6px">
@@ -1398,7 +1449,7 @@ async function showPage(id){
 }
 
 function initToggleListeners(){
-  ['ord-prod','ord-exw','ord-shipped','edit-prod','edit-exw','edit-shipped'].forEach(id=>{
+  ['ord-quoted','ord-paid','ord-prod','ord-exw','ord-shipped','edit-quoted','edit-paid','edit-prod','edit-exw','edit-shipped'].forEach(id=>{
     const el=document.getElementById(id);
     if(el){
       el.addEventListener('change',()=>{
@@ -1554,7 +1605,7 @@ async function confirmApprove(){
   const comments=qtyChanged?[`${todayPrefix()}Quantity adjusted from ${req.qty} to ${newQty} ${req.unit} on approval`]:[];
   await DB.addOrder({
     date:req.date,supplier:req.supplier,country:'',qty:newQty,product:req.product,
-    shipping:'Sea',type:req.type,vessel:'',prod:false,exw:false,shipped:false,
+    shipping:'Sea',type:req.type,vessel:'',quoted:false,paid:false,prod:false,exw:false,shipped:false,
     eta:'',instore:'',comments
   });
   closeApproveModal();
@@ -1640,7 +1691,7 @@ async function toggleOrderForm(open){
   wrap.classList.toggle('open');
   if(wrap.classList.contains('open')){
     document.getElementById('ord-date').value=today();
-    ['ord-prod','ord-exw','ord-shipped'].forEach(id=>{
+    ['ord-quoted','ord-paid','ord-prod','ord-exw','ord-shipped'].forEach(id=>{
       document.getElementById(id).checked=false;
       document.getElementById(id+'-lbl').textContent='No';
     });
@@ -1663,6 +1714,8 @@ async function saveOrder(){
     shipping:document.getElementById('ord-shipping').value,
     type:document.getElementById('ord-type').value,
     vessel:document.getElementById('ord-vessel').value.trim(),
+    quoted:document.getElementById('ord-quoted').checked,
+    paid:document.getElementById('ord-paid').checked,
     prod:document.getElementById('ord-prod').checked,
     exw:document.getElementById('ord-exw').checked,
     shipped:document.getElementById('ord-shipped').checked,
@@ -1699,6 +1752,7 @@ async function toggleHideArrived(){
   hideArrived=!hideArrived;
   const btn=document.getElementById('hide-arrived-btn');
   btn.classList.toggle('active',hideArrived);
+  btn.textContent=hideArrived?'👁 Show Arrived':'👁 Hide Arrived';
   await renderDashboard();
 }
 
@@ -1711,6 +1765,7 @@ async function clearDashFilters(){
   document.getElementById('dash-bu').value='';
   hideArrived=false;
   document.getElementById('hide-arrived-btn').classList.remove('active');
+  document.getElementById('hide-arrived-btn').textContent='👁 Hide Arrived';
   await renderDashboard();
 }
 
@@ -1730,9 +1785,49 @@ async function getFilteredOrders(){
     if(shipped==='yes'&&!o.shipped)return false;
     if(shipped==='no'&&o.shipped)return false;
     if(bu&&o.bu!==bu)return false;
-    if(hideArrived&&o.instore)return false;
+    if(hideArrived&&o.instore&&String(o.instore).trim())return false;
     return true;
   });
+}
+
+function renderArrivalSummary(orders){
+  const wrap=document.getElementById('arrival-summary');
+  const inner=document.getElementById('arrival-summary-inner');
+  if(!orders||!orders.length){wrap.style.display='none';return;}
+
+  // Build matrix: { "Country|BU": {total, arrived} }
+  const matrix={};
+  orders.forEach(o=>{
+    const country=o.country||'Unknown';
+    const bu=o.bu||'No BU';
+    const key=country+'||'+bu;
+    if(!matrix[key])matrix[key]={country,bu,total:0,arrived:0};
+    matrix[key].total++;
+    if(o.instore&&String(o.instore).trim())matrix[key].arrived++;
+  });
+
+  const entries=Object.values(matrix).sort((a,b)=>
+    a.country.localeCompare(b.country)||a.bu.localeCompare(b.bu)
+  );
+
+  let html='<span class="arrival-summary-title">📦 Arrived</span>';
+  entries.forEach(e=>{
+    const pct=e.total?Math.round((e.arrived/e.total)*100):0;
+    const cls=pct===100?'full':pct===0?'empty':'';
+    html+=`<div class="arrival-chip ${cls}">
+      <div>
+        <div class="chip-label">${e.country} · ${e.bu}</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:2px">
+          <div class="chip-bar"><div class="chip-bar-fill" style="width:${pct}%"></div></div>
+          <span class="chip-pct">${pct}%</span>
+          <span style="font-size:10px;color:var(--muted)">${e.arrived}/${e.total}</span>
+        </div>
+      </div>
+    </div>`;
+  });
+
+  inner.innerHTML=html;
+  wrap.style.display='block';
 }
 
 async function renderDashboard(){
@@ -1740,6 +1835,9 @@ async function renderDashboard(){
   if(!isAdmin())btnNew.style.display='none';
 
   const orders=await getFilteredOrders();
+  // Summary uses ALL orders (unfiltered) so country/BU totals are always accurate
+  const allOrders=await DB.getOrders();
+  renderArrivalSummary(allOrders);
   const tbody=document.getElementById('dash-tbody');
   if(!orders.length){
     tbody.innerHTML=`<tr><td colspan="14"><div class="empty-state"><div style="font-size:32px">📦</div><p>No orders found</p></div></td></tr>`;
@@ -1749,6 +1847,8 @@ async function renderDashboard(){
     const days=daysBetween(o.date,o.instore);
     const canEditRow=canEdit();
     const statusHtml=`<div class="status-checks">
+      <label><input type="checkbox" ${o.quoted?'checked':''} ${canEditRow?'':'disabled'} onchange="toggleStatus('${o.id}','quoted',this.checked)"/> Quoted</label>
+      <label><input type="checkbox" ${o.paid?'checked':''} ${canEditRow?'':'disabled'} onchange="toggleStatus('${o.id}','paid',this.checked)"/> Payment Done</label>
       <label><input type="checkbox" ${o.prod?'checked':''} ${canEditRow?'':'disabled'} onchange="toggleStatus('${o.id}','prod',this.checked)"/> Production</label>
       <label><input type="checkbox" ${o.exw?'checked':''} ${canEditRow?'':'disabled'} onchange="toggleStatus('${o.id}','exw',this.checked)"/> Ex-Works</label>
       <label><input type="checkbox" ${o.shipped?'checked':''} ${canEditRow?'':'disabled'} onchange="toggleStatus('${o.id}','shipped',this.checked)"/> Shipped</label>
@@ -1818,7 +1918,7 @@ async function openEditModal(id){
   document.getElementById('edit-eta').value=o.eta||'';
   document.getElementById('edit-instore').value=o.instore||'';
   document.getElementById('edit-bu').value=o.bu||'';
-  ['prod','exw','shipped'].forEach(f=>{
+  ['quoted','paid','prod','exw','shipped'].forEach(f=>{
     document.getElementById('edit-'+f).checked=o[f]||false;
     document.getElementById('edit-'+f+'-lbl').textContent=o[f]?'Yes':'No';
   });
@@ -1838,6 +1938,8 @@ async function saveEditOrder(){
     vessel:document.getElementById('edit-vessel').value,
     eta:document.getElementById('edit-eta').value,
     instore:document.getElementById('edit-instore').value,
+    quoted:document.getElementById('edit-quoted').checked,
+    paid:document.getElementById('edit-paid').checked,
     prod:document.getElementById('edit-prod').checked,
     exw:document.getElementById('edit-exw').checked,
     shipped:document.getElementById('edit-shipped').checked,
